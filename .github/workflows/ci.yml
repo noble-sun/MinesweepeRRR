@@ -5,25 +5,34 @@ on:
   push:
     branches: [ main ]
 
-defaults:
-  run:
-    working-directory: backend
 
 jobs:
   scan_ruby:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            backend:
+              - 'backend/**'
+
       - name: Set up Ruby
+        if: steps.filter.outputs.backend == 'true'
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: .ruby-version
           bundler-cache: true
 
       - name: Scan for common Rails security vulnerabilities using static analysis
+        if: steps.filter.outputs.backend == 'true'
         run: bin/brakeman --no-pager
 
   lint:
@@ -32,13 +41,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            backend:
+              - 'backend/**'
+
       - name: Set up Ruby
+        if: steps.filter.outputs.backend == 'true'
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: .ruby-version
           bundler-cache: true
 
       - name: Lint code for consistent style
+        if: steps.filter.outputs.backend == 'true'
         run: bin/rubocop -f github
 
   test:
@@ -67,13 +85,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            backend:
+              - 'backend/**'
+
       - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+        if: steps.filter.outputs.backend == 'true'
+        uses: ruby/setup-ruby@v2
         with:
           ruby-version: .ruby-version
           bundler-cache: true
 
       - name: Set up Database
+        if: steps.filter.outputs.backend == 'true'
         env:
           RAILS_ENV: test
           DATABASE_URL: postgres://postgres:postgres@localhost:5432
@@ -82,6 +109,7 @@ jobs:
           bin/rails db:migrate
 
       - name: Run tests
+        if: steps.filter.outputs.backend == 'true'
         env:
           RAILS_ENV: test
           DATABASE_URL: postgres://postgres:postgres@localhost:5432
