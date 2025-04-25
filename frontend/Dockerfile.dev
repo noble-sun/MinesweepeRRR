@@ -1,0 +1,11 @@
+FROM node:22.15-alpine
+
+WORKDIR /react-app
+
+COPY . .
+RUN npm install
+
+EXPOSE 5173
+
+CMD ["npm", "run", "dev"]
+
