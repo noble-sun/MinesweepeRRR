@@ -1,18 +1,17 @@
 FROM ruby:3.4.3
 
-WORKDIR /rails
+WORKDIR /rails-app
 
 # Doesn't need node and yarn because this is an api only app
 RUN apt-get update -qq && \
     apt-get install -y build-essential libpq-dev postgresql-client git curl
 
-RUN gem install bundler
-
-COPY Gemfile /rails/Gemfile
-COPY Gemfile.lock /rails/Gemfile.lock
+COPY Gemfile /rails-app/Gemfile
+COPY Gemfile.lock /rails-app/Gemfile.lock
+RUN bundle config --delete without
 RUN bundle install
 
-COPY . /rails
+COPY . /rails-app
 
 EXPOSE 3000
 
