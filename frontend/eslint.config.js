@@ -3,6 +3,10 @@ import globals from 'globals'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 import tseslint from 'typescript-eslint'
+import importPlugin from 'eslint-plugin-import'
+import simpleImportSort from 'eslint-plugin-simple-import-sort'
+import unusedImports from 'eslint-plugin-unused-imports'
+import sonarjs from 'eslint-plugin-sonarjs'
 
 export default tseslint.config(
   { ignores: ['dist'] },
@@ -16,6 +20,10 @@ export default tseslint.config(
     plugins: {
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
+      'import': importPlugin,
+      'simple-import-sort': simpleImportSort,
+      'unused-imports': unusedImports,
+      'sonarjs': sonarjs,
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
@@ -23,6 +31,21 @@ export default tseslint.config(
         'warn',
         { allowConstantExport: true },
       ],
+
+      // simple-import-sort
+      'simple-import-sort/imports': 'error',
+      'simple-import-sort/exports': 'error',
+
+      //unused-imports
+      'unused-imports/no-unused-imports': 'error',
+
+      //import-plugin
+      'import/order': ['error', { 'alphabetize': { order: 'asc', caseInsensitive: true } }],
+
+      //sonarjs
+      'sonarjs/no-duplicate-string': 'warn',
+      'sonarjs/no-identical-functions': 'warn',
+      'sonarjs/no-small-switch': 'warn',
     },
   },
 )
