@@ -38,7 +38,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: backend/.ruby-version
+          ruby-version: 3.4.3
           bundler-cache: true
 
       - name: Scan for common Rails security vulnerabilities using static analysis
@@ -59,7 +59,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: backend/.ruby-version
+          ruby-version: 3.4.3
           bundler-cache: true
 
       - name: Lint code for consistent style
@@ -99,7 +99,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v2
         with:
-          ruby-version: backend/.ruby-version
+          ruby-version: 3.4.3
           bundler-cache: true
 
       - name: Set up Database
