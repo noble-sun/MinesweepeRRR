@@ -7,11 +7,15 @@ import importPlugin from 'eslint-plugin-import'
 import simpleImportSort from 'eslint-plugin-simple-import-sort'
 import unusedImports from 'eslint-plugin-unused-imports'
 import sonarjs from 'eslint-plugin-sonarjs'
+import prettier from 'eslint-plugin-prettier'
 
 export default tseslint.config(
   { ignores: ['dist'] },
   {
-    extends: [js.configs.recommended, ...tseslint.configs.recommended],
+    extends: [
+      js.configs.recommended,
+      ...tseslint.configs.recommended,
+    ],
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
       ecmaVersion: 2020,
@@ -24,6 +28,7 @@ export default tseslint.config(
       'simple-import-sort': simpleImportSort,
       'unused-imports': unusedImports,
       'sonarjs': sonarjs,
+      'prettier': prettier,
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
@@ -46,6 +51,9 @@ export default tseslint.config(
       'sonarjs/no-duplicate-string': 'warn',
       'sonarjs/no-identical-functions': 'warn',
       'sonarjs/no-small-switch': 'warn',
+
+      //prettier
+      'prettier/prettier': ['error', { singleQuote: true, semi: false }],
     },
   },
 )
