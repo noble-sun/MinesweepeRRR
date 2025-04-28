@@ -8,6 +8,7 @@ import simpleImportSort from 'eslint-plugin-simple-import-sort'
 import unusedImports from 'eslint-plugin-unused-imports'
 import sonarjs from 'eslint-plugin-sonarjs'
 import prettier from 'eslint-plugin-prettier'
+import prettierRecommended from 'eslint-config-prettier'
 
 export default tseslint.config(
   { ignores: ['dist'] },
@@ -54,6 +55,7 @@ export default tseslint.config(
 
       //prettier
       'prettier/prettier': ['error', { singleQuote: true, semi: false }],
+      ...prettierRecommended.rules,
     },
   },
 )
