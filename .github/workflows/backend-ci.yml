@@ -1,35 +1,21 @@
-name: CI
+name: Frontend CI
 
 on:
   pull_request:
+    paths:
+      - 'backend/**'
   push:
     branches: [ main ]
+    paths:
+      - 'backend/**'
 
+defaults:
+  run:
+    working-directory: backend
 
 jobs:
-  changes:
-    runs-on: ubuntu-latest
-    outputs:
-      backend: ${{ steps.filter.outputs.backend }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Check for changes
-        uses: dorny/paths-filter@v3
-        id: filter
-        with:
-          filters: |
-            backend:
-              - 'backend/**'
-
   scan_ruby:
-    needs: changes
-    if: ${{ needs.changes.outputs.backend == 'true' }}
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: backend
 
     steps:
       - name: Checkout code
@@ -45,12 +31,7 @@ jobs:
         run: bin/brakeman --no-pager
 
   lint:
-    needs: changes
-    if: ${{ needs.changes.outputs.backend == 'true' }}
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: backend
 
     steps:
       - name: Checkout code
@@ -66,12 +47,7 @@ jobs:
         run: bin/rubocop -f github
 
   test:
-    needs: changes
-    if: ${{ needs.changes.outputs.backend == 'true' }}
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: backend
 
     services:
       postgres:
