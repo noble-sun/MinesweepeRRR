@@ -1,4 +1,4 @@
-name: Frontend CI
+name: Backend CI
 
 on:
   pull_request:
@@ -24,8 +24,10 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.4.3
+          ruby-version: '3.4.3'
           bundler-cache: true
+
+      - run: bundle install
 
       - name: Scan for common Rails security vulnerabilities using static analysis
         run: bin/brakeman --no-pager
@@ -42,6 +44,8 @@ jobs:
         with:
           ruby-version: 3.4.3
           bundler-cache: true
+
+      - run: bundle install
 
       - name: Lint code for consistent style
         run: bin/rubocop -f github
@@ -66,22 +70,27 @@ jobs:
       #   options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
-      - name: Install packages
-        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y build-essential git libpq-dev libyaml-dev pkg-config
-
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install packages
+        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y build-essential git libpq-dev libyaml-dev pkg-config
+
       - name: Set up Ruby
-        uses: ruby/setup-ruby@v2
+        uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.4.3
           bundler-cache: true
+
+      - run: bundle install
 
       - name: Set up Database
         env:
           RAILS_ENV: test
           DATABASE_URL: postgres://postgres:postgres@localhost:5432
+          DATABASE_HOST: postgres
+          DATABASE_USERNAME: postgres
+          DATABASE_PASSWORD: postgres
         run: |
           bin/rails db:create
           bin/rails db:migrate
