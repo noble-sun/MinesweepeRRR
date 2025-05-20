@@ -6,6 +6,7 @@ class Cell
     @clue = 0
   end
 
+  def place_mine; @mine = true end
   def mine?; mine end
   def relealed?; relealed end
   def flagged?; flagged end
