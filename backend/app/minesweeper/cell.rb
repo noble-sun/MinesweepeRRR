@@ -17,7 +17,7 @@ class Cell
   def mine?; mine end
   def relealed?; relealed end
   def flagged?; flagged end
-  def clue; clue end
+  def clue_count; clue end
 
   private
 

@@ -19,5 +19,7 @@ class GenerateCluesService
         end
       end
     end
+
+    true
   end
 end
