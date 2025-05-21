@@ -1,3 +1,5 @@
+class CellOutOfBoundsError < StandardError; end
+
 class Minefield
   attr_reader :size, :grid
 
@@ -11,7 +13,9 @@ class Minefield
   end
 
   def cell(x, y)
-    grid[x][y]
+    return grid[x][y] if in_bounds?(x, y)
+
+    raise CellOutOfBoundsError.new("Cell outside grid limits")
   end
 
   def clear_field
