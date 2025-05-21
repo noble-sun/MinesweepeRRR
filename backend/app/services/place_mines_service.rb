@@ -1,4 +1,4 @@
-require_relative "#{Rails.root.join("app/minesweeper/minefield")}"
+# require_relative "#{Rails.root.join("app/minesweeper/minefield")}"
 
 class PlaceMinesService
   def self.call(minefield:, mine_count:)

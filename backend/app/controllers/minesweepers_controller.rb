@@ -1,7 +1,8 @@
 class MinesweepersController < ApplicationController
   def generate
-    board = Minefield.new(size: 16)
-    placed_mines = PlaceMinesService.call(minefield: board, mine_count: 40)
+    board = Minefield.new(size: 5)
+    PlaceMinesService.call(minefield: board, mine_count: 10)
+    GenerateCluesService.call(minefield: board)
 
     render json: board.grid
   end
