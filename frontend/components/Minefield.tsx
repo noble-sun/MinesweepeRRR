@@ -15,8 +15,10 @@ export default function Minefield() {
       })
   }, [])
 
-  const handleClick = (hasMine: boolean, row: number, col: number) => {
-    console.log(`x: ${row}, y: ${col}, has mine: ${hasMine}`)
+  const [revealedCells, setRevealedCells] = useState<Set<string>>(new Set())
+  const handleClick = (row: number, col: number) => {
+    const key = `${row}-${col}`
+    setRevealedCells(prev => new Set(prev).add(key))
   }
 
   return (
@@ -28,6 +30,7 @@ export default function Minefield() {
               key={`cell-${rowIndex}-${colIndex}`}
               row={rowIndex}
               col={colIndex}
+              isRevealed={revealedCells.has(`${rowIndex}-${colIndex}`)}
               onClick={handleClick}
               hasMine={cell.mine}
               clue={cell.clue}

@@ -4,4 +4,5 @@ export interface CellProps {
   onClick: (row: number, col: number) => void;
   hasMine: boolean;
   clue: number;
+  isRevealed: boolean;
 }
