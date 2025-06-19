@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import { Cell } from './Cell.tsx'
 
 export default function Minefield() {
   const [minefield, setMinefield] = useState([]);
@@ -14,17 +15,23 @@ export default function Minefield() {
       })
   }, [])
 
+  const handleClick = (hasMine: boolean, row: number, col: number) => {
+    console.log(`x: ${row}, y: ${col}, has mine: ${hasMine}`)
+  }
+
   return (
     <div className="block">
       {minefield.map((row, rowIndex) => (
         <div key={rowIndex} className="flex">
           {row.map((cell, colIndex) => ( 
-            <button key={colIndex} id={`cell-${rowIndex}-${colIndex}`}
-              className="!w-6 h-6 !p-0 !m-0 !border !rounded-none !border-gray-700 flex items-center justify-center"
-              onClick={() => { console.log(`x: ${rowIndex}, y: ${colIndex}, value: ${JSON.stringify(cell)}`) } }
-            >
-              { cell.mine ? '*' : '0' }
-            </button>
+            <Cell
+              key={`cell-${rowIndex}-${colIndex}`}
+              row={rowIndex}
+              col={colIndex}
+              onClick={handleClick}
+              hasMine={cell.mine}
+              clue={cell.clue}
+            />
           ))}
         </div>
       ))}
