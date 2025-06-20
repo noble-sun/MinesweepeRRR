@@ -10,7 +10,7 @@ export default function GameInfoBar(
     <>
       <div className="flex justify-between items-center grow">
         <span> Mines: {mineCount}</span>
-        <div className="cursor-pointer">
+        <div className="cursor-pointer" onClick={() => { window.location.reload() }}>
           { exploded ? <img src={deadFaceIcon}/> : <img src={smileFaceIcon} /> }
         </div>
         <span> Time: {time} </span>
