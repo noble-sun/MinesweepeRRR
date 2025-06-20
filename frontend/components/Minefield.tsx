@@ -4,12 +4,13 @@ import { Cell } from './Cell.tsx'
 import GameInfoBar from './GameInfoBar.tsx'
 
 export default function Minefield(
-  {startTimer, stopTimer, gameIsRunning, onExplode, exploded}: {
+  {startTimer, stopTimer, gameIsRunning, onExplode, exploded, onFlagCellChange}: {
     startTimer: () => void,
     stopTimer: () => void,
     gameIsRunning: boolean,
     onExplode: () => void,
-    exploded: boolean
+    exploded: boolean,
+    onFlagCellChange: () => void
   }
 ) {
   const [minefield, setMinefield] = useState([]);
@@ -39,10 +40,11 @@ export default function Minefield(
   }
 
   const handleRightClick = (row: number, col: number) => {
-    const key = `${row}-${col}`
     if(!gameIsRunning) { startTimer() }
-    const updateFlaggedCount = flaggedCells.has(key) ? 1 : -1
-    setMinesCount((prevCount) => prevCount + updateFlaggedCount)
+    const key = `${row}-${col}`
+
+    const updateMineCountBy = flaggedCells.has(key) ? 1 : -1
+    onFlagCellChange(updateMineCountBy)
 
     setFlaggedCells(prevFlagged => {
       const flagged = new Set(prevFlagged)
@@ -51,8 +53,6 @@ export default function Minefield(
     })
     console.log(`Right Clicked cell ${row}-${col}`)
   }
-
-  const [minesCount, setMinesCount] = useState(40)
 
   return (
     <>

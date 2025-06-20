@@ -6,6 +6,8 @@ import GameInfoBar from '../components/GameInfoBar.tsx'
 import Minefield from '../components/Minefield.tsx'
 
 function App() {
+  const [exploded, setExploded] = useState(false)
+
   const [time, setTime] = useState(0)
   const [gameIsRunning, setGameIsRunning] = useState(false)
   const timerRef = useRef<NodeJS.Timeout | null>(null)
@@ -33,16 +35,21 @@ function App() {
     }
   }, [])
 
-  const [exploded, setExploded] = useState(false)
+  const [mineCount, setMineCount] = useState(40)
+  const updateMineCount = (value) => {
+    setMineCount((prevCount) => prevCount + value)
+  }
+
   return (
     <>
-      <GameInfoBar time={time} exploded={exploded} />
+      <GameInfoBar time={time} exploded={exploded} mineCount={mineCount} />
       <Minefield
         startTimer={startTimer}
         stopTimer={stopTimer}
         gameIsRunning={gameIsRunning}
         onExplode={() => setExploded(true)}
         exploded={exploded}
+        onFlagCellChange={updateMineCount}
       />
     </>
   )
