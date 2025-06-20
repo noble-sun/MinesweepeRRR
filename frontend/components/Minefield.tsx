@@ -1,8 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 import { Cell } from './Cell.tsx'
+import GameInfoBar from './GameInfoBar.tsx'
 
-export default function Minefield() {
+export default function Minefield(
+  {startTimer, stopTimer, gameIsRunning}:
+  {startTimer: () => void, stopTimer: () => void, gameIsRunning: boolean}
+) {
   const [minefield, setMinefield] = useState([]);
 
   useEffect(() => {
@@ -15,29 +19,17 @@ export default function Minefield() {
       })
   }, [])
 
-  const [time, setTime] = useState(0)
-  const [timeInterval, setTimeInterval] = useState(null)
-
-  const startTime = () => {
-    if(timeInterval === null) {
-      setTimeInterval(setInterval(() => {
-        setTime((oldTime) => oldTime + 1)
-      }, 1000))
-    }
-  }
-
-  const [bombExplosion, setBombExplosion] = useState(false)
+  const [bombExploded, setBombExploded] = useState(false)
   const [flaggedCells, setFlaggedCells] = useState<Set<string>>(new Set())
   const [revealedCells, setRevealedCells] = useState<Set<string>>(new Set())
   const handleClick = (row: number, col: number, hasMine: boolean, flagged: boolean) => {
     const key = `${row}-${col}`
     if(!flaggedCells.has(key)) {
       setRevealedCells(prev => new Set(prev).add(key))
-      if(!bombExplosion) { startTime() }
+      if(!gameIsRunning) { startTimer() }
       if(hasMine) {
-        clearInterval(timeInterval)
-        setTimeInterval(null)
-        setBombExplosion(true)
+        stopTimer()
+        setBombExploded(true)
         setSmileFace("=(")
       }
     }
@@ -45,8 +37,7 @@ export default function Minefield() {
 
   const handleRightClick = (row: number, col: number) => {
     const key = `${row}-${col}`
-    if(!bombExplosion) { startTime() }
-
+    if(!gameIsRunning) { startTimer() }
     const updateFlaggedCount = flaggedCells.has(key) ? 1 : -1
     setMinesCount((prevCount) => prevCount + updateFlaggedCount)
 
@@ -63,11 +54,6 @@ export default function Minefield() {
 
   return (
     <>
-      <div className="flex justify-between items-center grow">
-        <span> Mines: {minesCount} </span>
-        <div onClick={() => { window.location.reload()}} className="cursor-pointer"> <i>{smileFace}</i> </div>
-        <span> Time: {time} </span>
-      </div>
     <div className="block" id="minefield">
       {minefield.map((row, rowIndex) => (
         <div key={rowIndex} className="flex">
@@ -81,7 +67,7 @@ export default function Minefield() {
               onRightClick={handleRightClick}
               hasMine={cell.mine}
               clue={cell.clue}
-              bombExploded={bombExplosion}
+              bombExploded={bombExploded}
               flagged={flaggedCells.has(`${rowIndex}-${colIndex}`)}
             />
           ))}
