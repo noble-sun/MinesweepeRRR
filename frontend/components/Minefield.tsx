@@ -4,8 +4,13 @@ import { Cell } from './Cell.tsx'
 import GameInfoBar from './GameInfoBar.tsx'
 
 export default function Minefield(
-  {startTimer, stopTimer, gameIsRunning}:
-  {startTimer: () => void, stopTimer: () => void, gameIsRunning: boolean}
+  {startTimer, stopTimer, gameIsRunning, onExplode, exploded}: {
+    startTimer: () => void,
+    stopTimer: () => void,
+    gameIsRunning: boolean,
+    onExplode: () => void,
+    exploded: boolean
+  }
 ) {
   const [minefield, setMinefield] = useState([]);
 
@@ -19,7 +24,6 @@ export default function Minefield(
       })
   }, [])
 
-  const [bombExploded, setBombExploded] = useState(false)
   const [flaggedCells, setFlaggedCells] = useState<Set<string>>(new Set())
   const [revealedCells, setRevealedCells] = useState<Set<string>>(new Set())
   const handleClick = (row: number, col: number, hasMine: boolean, flagged: boolean) => {
@@ -29,8 +33,7 @@ export default function Minefield(
       if(!gameIsRunning) { startTimer() }
       if(hasMine) {
         stopTimer()
-        setBombExploded(true)
-        setSmileFace("=(")
+        onExplode()
       }
     }
   }
@@ -50,7 +53,6 @@ export default function Minefield(
   }
 
   const [minesCount, setMinesCount] = useState(40)
-  const [ smileFace, setSmileFace] = useState("=)")
 
   return (
     <>
@@ -67,7 +69,7 @@ export default function Minefield(
               onRightClick={handleRightClick}
               hasMine={cell.mine}
               clue={cell.clue}
-              bombExploded={bombExploded}
+              exploded={exploded}
               flagged={flaggedCells.has(`${rowIndex}-${colIndex}`)}
             />
           ))}

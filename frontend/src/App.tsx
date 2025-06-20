@@ -33,10 +33,17 @@ function App() {
     }
   }, [])
 
+  const [exploded, setExploded] = useState(false)
   return (
     <>
-      <GameInfoBar time={time} />
-      <Minefield startTimer={startTimer} stopTimer={stopTimer} gameIsRunning={gameIsRunning} />
+      <GameInfoBar time={time} exploded={exploded} />
+      <Minefield
+        startTimer={startTimer}
+        stopTimer={stopTimer}
+        gameIsRunning={gameIsRunning}
+        onExplode={() => setExploded(true)}
+        exploded={exploded}
+      />
     </>
   )
 }
