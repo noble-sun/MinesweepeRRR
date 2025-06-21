@@ -1,5 +1,6 @@
 import React from 'react'
 import { CellProps } from './types'
+import flag from '../src/assets/flag.svg'
 
 export const Cell = (
   {
@@ -17,7 +18,7 @@ export const Cell = (
   const displayClue = () => { return (clue === 0) ? "" : clue }
   const displayContextValue = () => {
     if(isRevealed) return hasMine ? "*" : displayClue();
-    if(flagged) return "!"
+    if(flagged) return <img src={flag}/>
     return ""
   }
 
