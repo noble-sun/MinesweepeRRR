@@ -14,8 +14,9 @@ export const Cell = (
     flagged
   }: CellProps
 ) => {
+  const displayClue = () => { return (clue === 0) ? "" : clue }
   const displayContextValue = () => {
-    if(isRevealed) return hasMine ? "*" : clue;
+    if(isRevealed) return hasMine ? "*" : displayClue();
     if(flagged) return "!"
     return ""
   }

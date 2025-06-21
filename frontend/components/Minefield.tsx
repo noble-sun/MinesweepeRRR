@@ -37,7 +37,38 @@ export default function Minefield(
         onExplode()
       }
     }
+
+    const adjacentRows: number[] = [row-1, row, row+1]
+    const adjacentCols: number[] = [col-1, col, col+1]
+    const adjacentCells: [number, number][] =
+      adjacentRows.flatMap( (neighborRow): [number, number][] =>
+        adjacentCols.map( (neighborCol): [number, number] =>
+          [neighborRow,neighborCol]
+        )
+      )
+
+    const validTuple: boolean = ([tRow, tCol]: [number, number]) => {
+      if(tRow === row && tCol === col) { return false }
+
+      return (tRow >= 0) && (tRow <= minefield[0].length - 1) &&
+        (tCol >= 0) && (tCol <= minefield.length - 1)
+    }
+
+    const validAdjacentCells: [number, number][] =
+      adjacentCells.filter((tuple) => validTuple(tuple))
+
+    if (minefield[row][col].clue === 0) {
+      validAdjacentCells.map(([tRow, tCol]: [number, number]) => {
+        const key = `${tRow}-${tCol}`
+        if(typeof minefield[tRow][tCol].clue === "number") {
+          setRevealedCells(prev => new Set(prev).add(key))
+        }
+      })
+    }
+
+    console.log(validAdjacentCells)
   }
+
 
   const handleRightClick = (row: number, col: number) => {
     if(!gameIsRunning) { startTimer() }
@@ -51,7 +82,6 @@ export default function Minefield(
       flagged.has(key) ? flagged.delete(key) : flagged.add(key)
       return flagged
     })
-    console.log(`Right Clicked cell ${row}-${col}`)
   }
 
   return (
