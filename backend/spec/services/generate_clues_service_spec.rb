@@ -30,8 +30,8 @@ RSpec.describe GenerateCluesService, type: :service do
 
           described_class.call(minefield:)
 
-          expect(first_mine.clue_count).to eq(0)
-          expect(second_mine.clue_count).to eq(0)
+          expect(first_mine.clue_count).to be_nil
+          expect(second_mine.clue_count).to be_nil
 
           expected_clue_1 = [ [ 2, 2 ], [ 3, 2 ] ]
           expected_clue_1.each do |x, y|

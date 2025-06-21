@@ -63,4 +63,24 @@ RSpec.describe Cell do
       end
     end
   end
+
+  describe "#set_clue_as_mine" do
+    context "define clue as nill" do
+      it "successfully" do
+        cell = Cell.new(x: 0, y: 0)
+        cell.place_mine
+
+        expect(cell.set_clue_as_mine).to be_nil
+      end
+    end
+
+    context "when there isn't a mine on cell" do
+      it "does not update clue value and raise error" do
+        cell = Cell.new(x: 0, y: 0)
+
+        expect { cell.set_clue_as_mine }
+          .to raise_error(NoMineError, "Cannot define clue as mine when there isn't a mine placed")
+      end
+    end
+  end
 end

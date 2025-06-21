@@ -10,7 +10,10 @@ class GenerateCluesService
   def call
     @minefield.grid.each do |row|
       row.each do |cell|
-        next if cell.mine?
+        if cell.mine?
+          cell.set_clue_as_mine
+          next
+        end
 
         neighbors = cell.neighbors.select { |px, py| @minefield.in_bounds?(px, py) }
 
