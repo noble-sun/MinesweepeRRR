@@ -40,21 +40,19 @@ export default function Minefield(
   const [flaggedCells, setFlaggedCells] = useState<Set<string>>(new Set())
   const [revealedCells, setRevealedCells] = useState<Set<string>>(new Set())
   const handleClick = (row: number, col: number, hasMine: boolean, flagged: boolean) => {
+    if(!gameIsRunning) { startTimer() }
+
     const key = `${row}-${col}`
-    if(!flaggedCells.has(key)) {
-      setNotMines(prev => {
-        const nm = new Set(prev)
-        nm.delete(key)
-        return nm
-      })
+    if(flaggedCells.has(key) || question.has(key)) { return }
+    setNotMines(prev => {
+      const nm = new Set(prev)
+      nm.delete(key)
+      return nm
+    })
 
-      setRevealedCells(prev => new Set(prev).add(key))
-      if(!gameIsRunning) { startTimer() }
-      if(hasMine) {
-        loser()
-      }
-    }
+    if(hasMine) { loser() }
 
+    setRevealedCells(prev => new Set(prev).add(key))
     expandAdjacentCells(row, col) 
   }
 
