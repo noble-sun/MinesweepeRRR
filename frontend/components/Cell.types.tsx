@@ -8,4 +8,5 @@ export interface CellProps {
   isRevealed: boolean;
   bombExploded: boolean;
   flagged: boolean;
+  questionMarked: boolean;
 }

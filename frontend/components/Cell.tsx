@@ -1,6 +1,7 @@
 import React from 'react'
 import { CellProps } from './types'
 import flag from '../src/assets/flag.svg'
+import questionMark from '../src/assets/questionMark.svg'
 
 export const Cell = (
   {
@@ -12,13 +13,15 @@ export const Cell = (
     isRevealed,
     exploded,
     onRightClick,
-    flagged
+    flagged,
+    questionMarked
   }: CellProps
 ) => {
   const displayClue = () => { return (clue === 0) ? "" : clue }
   const displayContextValue = () => {
     if(isRevealed) return hasMine ? "*" : displayClue();
     if(flagged) return <img src={flag}/>
+    if(questionMarked) return <img src={questionMark} />
     return ""
   }
 

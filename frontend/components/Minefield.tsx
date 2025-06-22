@@ -77,6 +77,7 @@ export default function Minefield(
 
     const validTuple: boolean = ([tRow, tCol]: [number, number]) => {
       if(flaggedCells.has(`${tRow}-${tCol}`)) { return false }
+      if(question.has(`${tRow}-${tCol}`)) { return false }
       if(revealedCells.has(`${tRow}-${tCol}`)) { return false }
       if(tRow === row && tCol === col) { return false }
 
@@ -91,12 +92,38 @@ export default function Minefield(
     if(!gameIsRunning) { startTimer() }
     const key = `${row}-${col}`
 
+
+    if (question.has(key)) {
+      setQuestion(prevQuestion => {
+        const questionMarked = new Set(prevQuestion)
+        questionMarked.delete(key)
+
+        return questionMarked
+      })
+    } else {
+      flaggedCells.has(key) ? placeQuestion(row, col) : placeFlag(row, col)
+    }
+  }
+
+  const placeFlag = (row: number, col: number) => {
+    const key = `${row}-${col}`
+    const updateMineCountBy = flaggedCells.has(key) ? 1 : -1
+    onFlagCellChange(updateMineCountBy)
+
+    setFlaggedCells(prevFlagged => new Set(prevFlagged).add(key))
+  }
+
+  const [question, setQuestion] = useState<Set<string>>(new Set())
+  const placeQuestion = (row: number, col: number) => {
+    const key = `${row}-${col}`
+    setQuestion(prevQuestion => new Set(prevQuestion).add(key))
+
     const updateMineCountBy = flaggedCells.has(key) ? 1 : -1
     onFlagCellChange(updateMineCountBy)
 
     setFlaggedCells(prevFlagged => {
       const flagged = new Set(prevFlagged)
-      flagged.has(key) ? flagged.delete(key) : flagged.add(key)
+      flagged.delete(key)
       return flagged
     })
   }
@@ -118,6 +145,7 @@ export default function Minefield(
               clue={cell.clue}
               exploded={exploded}
               flagged={flaggedCells.has(`${rowIndex}-${colIndex}`)}
+              questionMarked={question.has(`${rowIndex}-${colIndex}`)}
             />
           ))}
         </div>
