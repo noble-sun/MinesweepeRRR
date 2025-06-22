@@ -38,6 +38,34 @@ export default function Minefield(
       }
     }
 
+    expandAdjacentCells(row, col) 
+  }
+
+  const expandAdjacentCells = (row: number, col: number, visited: Set<string> = new Set()) => {
+    const key = `${row}-${col}`
+    if (visited.has(key)) return
+    visited.add(key)
+
+    const expandedCellsRevealed = []
+    if (minefield[row][col].clue === 0) {
+      const adjacentCellsNotYetRevealed = getValidAdjacentCells(row, col)
+
+      adjacentCellsNotYetRevealed.map(([tRow, tCol]: [number, number]) => {
+        const key = `${tRow}-${tCol}`
+        setRevealedCells(prev => new Set(prev).add(key))
+      })
+
+      const cellsToExpand = adjacentCellsNotYetRevealed.filter(([aRow, aCol]) => {
+        return minefield[aRow][aCol].clue === 0
+      })
+
+      cellsToExpand.map(([cRow, cCol]) => {
+        expandAdjacentCells(cRow, cCol, visited)
+      })
+    }
+  }
+
+  const getValidAdjacentCells: [number, number][] = (row: number, col: number) => {
     const adjacentRows: number[] = [row-1, row, row+1]
     const adjacentCols: number[] = [col-1, col, col+1]
     const adjacentCells: [number, number][] =
@@ -48,27 +76,16 @@ export default function Minefield(
       )
 
     const validTuple: boolean = ([tRow, tCol]: [number, number]) => {
+      if(flaggedCells.has(`${tRow}-${tCol}`)) { return false }
+      if(revealedCells.has(`${tRow}-${tCol}`)) { return false }
       if(tRow === row && tCol === col) { return false }
 
       return (tRow >= 0) && (tRow <= minefield[0].length - 1) &&
         (tCol >= 0) && (tCol <= minefield.length - 1)
     }
 
-    const validAdjacentCells: [number, number][] =
-      adjacentCells.filter((tuple) => validTuple(tuple))
-
-    if (minefield[row][col].clue === 0) {
-      validAdjacentCells.map(([tRow, tCol]: [number, number]) => {
-        const key = `${tRow}-${tCol}`
-        if(typeof minefield[tRow][tCol].clue === "number") {
-          setRevealedCells(prev => new Set(prev).add(key))
-        }
-      })
-    }
-
-    console.log(validAdjacentCells)
+    return adjacentCells.filter((tuple) => validTuple(tuple))
   }
-
 
   const handleRightClick = (row: number, col: number) => {
     if(!gameIsRunning) { startTimer() }
