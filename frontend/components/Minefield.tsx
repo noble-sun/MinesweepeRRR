@@ -4,13 +4,14 @@ import { Cell } from './Cell.tsx'
 import GameInfoBar from './GameInfoBar.tsx'
 
 export default function Minefield(
-  {startTimer, stopTimer, gameIsRunning, onExplode, exploded, onFlagCellChange}: {
+  {startTimer, stopTimer, gameIsRunning, onExplode, exploded, onFlagCellChange, gameWon}: {
     startTimer: () => void,
     stopTimer: () => void,
     gameIsRunning: boolean,
     onExplode: () => void,
     exploded: boolean,
-    onFlagCellChange: () => void
+    onFlagCellChange: () => void,
+    gameWon: () => void
   }
 ) {
   const [minefield, setMinefield] = useState([]);
@@ -19,22 +20,38 @@ export default function Minefield(
     axios.get('http://localhost:3000/minesweepers/generate')
       .then(response => {
         setMinefield(response.data)
+        
+        const tempNotMines = new Set()
+        response.data.forEach((row, rowIndex) => {
+          row.forEach((cell, colIndex) => {
+            if(!cell.mine) { tempNotMines.add(`${rowIndex}-${colIndex}`)}
+          })
+        })
+
+        setNotMines(tempNotMines)
       })
       .catch(error => {
         console.log(error)
       })
   }, [])
 
+  const [notMines, setNotMines] = useState<Set<string>>(new Set())
+
   const [flaggedCells, setFlaggedCells] = useState<Set<string>>(new Set())
   const [revealedCells, setRevealedCells] = useState<Set<string>>(new Set())
   const handleClick = (row: number, col: number, hasMine: boolean, flagged: boolean) => {
     const key = `${row}-${col}`
     if(!flaggedCells.has(key)) {
+      setNotMines(prev => {
+        const nm = new Set(prev)
+        nm.delete(key)
+        return nm
+      })
+
       setRevealedCells(prev => new Set(prev).add(key))
       if(!gameIsRunning) { startTimer() }
       if(hasMine) {
-        stopTimer()
-        onExplode()
+        loser()
       }
     }
 
@@ -53,6 +70,11 @@ export default function Minefield(
       adjacentCellsNotYetRevealed.map(([tRow, tCol]: [number, number]) => {
         const key = `${tRow}-${tCol}`
         setRevealedCells(prev => new Set(prev).add(key))
+        setNotMines(prev => {
+          const nm = new Set(prev)
+          nm.delete(key)
+          return nm
+        })
       })
 
       const cellsToExpand = adjacentCellsNotYetRevealed.filter(([aRow, aCol]) => {
@@ -126,6 +148,23 @@ export default function Minefield(
       flagged.delete(key)
       return flagged
     })
+  }
+
+  useEffect(() => {
+    console.log(notMines.size)
+    if(notMines.size === 0 && minefield.length > 0) { winner() }
+  })
+
+
+  const winner = () => {
+    stopTimer()
+    gameWon(true)
+  }
+
+  const loser = () => {
+    stopTimer()
+    onExplode()
+    gameWon(false)
   }
 
   return (

@@ -40,8 +40,20 @@ function App() {
     setMineCount((prevCount) => prevCount + value)
   }
 
+  const [gameWon, setGameWon] = useState<boolean | null>(null)
+  const updateGameStatus = (value) => {
+    setGameWon(value)
+  }
+
+  const renderGameStatus = () => {
+    if (gameWon === null) return
+    const text = gameWon ? "You Won!!!" : "You Lost!"
+
+    return <span>{text}</span>
+  }
   return (
     <>
+      <div>{renderGameStatus()}</div>
       <GameInfoBar time={time} exploded={exploded} mineCount={mineCount} />
       <Minefield
         startTimer={startTimer}
@@ -50,6 +62,7 @@ function App() {
         onExplode={() => setExploded(true)}
         exploded={exploded}
         onFlagCellChange={updateMineCount}
+        gameWon={updateGameStatus}
       />
     </>
   )
