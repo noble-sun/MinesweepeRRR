@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 import { Cell } from './Cell.tsx'
 import GameInfoBar from './GameInfoBar.tsx'
+import { adjacentCellsToExpand } from '../helpers/adjacentCellsToExpand.ts'
 
 export default function Minefield(
   {startTimer, stopTimer, gameIsRunning, onExplode, exploded, onFlagCellChange, gameWon}: {
@@ -63,7 +64,14 @@ export default function Minefield(
 
     const expandedCellsRevealed = []
     if (minefield[row][col].clue === 0) {
-      const adjacentCellsNotYetRevealed = getValidAdjacentCells(row, col)
+      const adjacentCellsNotYetRevealed = adjacentCellsToExpand(
+        row,
+        col,
+        minefield,
+        flaggedCells,
+        revealedCells,
+        question
+      )
 
       adjacentCellsNotYetRevealed.map(([tRow, tCol]: [number, number]) => {
         const key = `${tRow}-${tCol}`
@@ -83,29 +91,6 @@ export default function Minefield(
         expandAdjacentCells(cRow, cCol, visited)
       })
     }
-  }
-
-  const getValidAdjacentCells: [number, number][] = (row: number, col: number) => {
-    const adjacentRows: number[] = [row-1, row, row+1]
-    const adjacentCols: number[] = [col-1, col, col+1]
-    const adjacentCells: [number, number][] =
-      adjacentRows.flatMap( (neighborRow): [number, number][] =>
-        adjacentCols.map( (neighborCol): [number, number] =>
-          [neighborRow,neighborCol]
-        )
-      )
-
-    const validTuple: boolean = ([tRow, tCol]: [number, number]) => {
-      if(flaggedCells.has(`${tRow}-${tCol}`)) { return false }
-      if(question.has(`${tRow}-${tCol}`)) { return false }
-      if(revealedCells.has(`${tRow}-${tCol}`)) { return false }
-      if(tRow === row && tCol === col) { return false }
-
-      return (tRow >= 0) && (tRow <= minefield[0].length - 1) &&
-        (tCol >= 0) && (tCol <= minefield.length - 1)
-    }
-
-    return adjacentCells.filter((tuple) => validTuple(tuple))
   }
 
   const handleRightClick = (row: number, col: number) => {
