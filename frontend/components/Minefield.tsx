@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react'
-import axios from 'axios'
+import React, { useState, useEffect } from 'react'
 import { Cell } from './Cell.tsx'
 import GameInfoBar from './GameInfoBar.tsx'
 import { adjacentCellsToExpand } from '../helpers/adjacentCellsToExpand.ts'
-import minesweeperApi, { Minefield as MinefieldType } from '../src/utils/api.ts'
+import { useMinefield } from '../hooks/useMinefield.ts'
 
 export default function Minefield(
   {startTimer, stopTimer, gameIsRunning, onExplode, exploded, onFlagCellChange, gameWon}: {
@@ -16,28 +15,8 @@ export default function Minefield(
     gameWon: () => void
   }
 ) {
-  const [minefield, setMinefield] = useState([]);
 
-  useEffect(() => {
-    minesweeperApi.generateMinefield()
-      .then((data: MinefieldType) => {
-        setMinefield(data)
-        
-        const tempNotMines = new Set()
-        data.forEach((row, rowIndex) => {
-          row.forEach((cell, colIndex) => {
-            if(!cell.mine) { tempNotMines.add(`${rowIndex}-${colIndex}`)}
-          })
-        })
-
-        setNotMines(tempNotMines)
-      })
-      .catch(error => {
-        console.log(error)
-      })
-  }, [])
-
-  const [notMines, setNotMines] = useState<Set<string>>(new Set())
+  const { minefield, hiddenNonMinesCells, setHiddenNonMinesCells } = useMinefield()
 
   const [flaggedCells, setFlaggedCells] = useState<Set<string>>(new Set())
   const [revealedCells, setRevealedCells] = useState<Set<string>>(new Set())
@@ -46,7 +25,7 @@ export default function Minefield(
 
     const key = `${row}-${col}`
     if(flaggedCells.has(key) || question.has(key)) { return }
-    setNotMines(prev => {
+    setHiddenNonMinesCells(prev => {
       const nm = new Set(prev)
       nm.delete(key)
       return nm
@@ -77,7 +56,7 @@ export default function Minefield(
       adjacentCellsNotYetRevealed.map(([tRow, tCol]: [number, number]) => {
         const key = `${tRow}-${tCol}`
         setRevealedCells(prev => new Set(prev).add(key))
-        setNotMines(prev => {
+        setHiddenNonMinesCells(prev => {
           const nm = new Set(prev)
           nm.delete(key)
           return nm
@@ -136,8 +115,7 @@ export default function Minefield(
   }
 
   useEffect(() => {
-    console.log(notMines.size)
-    if(notMines.size === 0 && minefield.length > 0) { winner() }
+    if(hiddenNonMinesCells.size === 0 && minefield.length > 0) { winner() }
   })
 
 
