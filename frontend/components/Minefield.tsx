@@ -111,7 +111,8 @@ export default function Minefield(
   const handleRightClick = (row: number, col: number) => {
     if(!gameIsRunning) { startTimer() }
     const key = `${row}-${col}`
-
+    
+    if (revealedCells.has(key)) return
 
     if (question.has(key)) {
       setQuestion(prevQuestion => {
