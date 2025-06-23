@@ -47,7 +47,7 @@ function App() {
 
   const renderGameStatus = () => {
     if (gameWon === null) return
-    const text = gameWon ? "You Won!!!" : "You Lost!"
+    const text = gameWon ? 'You Won!!!' : 'You Lost!'
 
     return <span>{text}</span>
   }

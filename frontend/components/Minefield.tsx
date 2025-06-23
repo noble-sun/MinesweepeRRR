@@ -3,6 +3,7 @@ import axios from 'axios'
 import { Cell } from './Cell.tsx'
 import GameInfoBar from './GameInfoBar.tsx'
 import { adjacentCellsToExpand } from '../helpers/adjacentCellsToExpand.ts'
+import minesweeperApi, { Minefield as MinefieldType } from '../src/utils/api.ts'
 
 export default function Minefield(
   {startTimer, stopTimer, gameIsRunning, onExplode, exploded, onFlagCellChange, gameWon}: {
@@ -18,12 +19,12 @@ export default function Minefield(
   const [minefield, setMinefield] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:3000/minesweepers/generate')
-      .then(response => {
-        setMinefield(response.data)
+    minesweeperApi.generateMinefield()
+      .then((data: MinefieldType) => {
+        setMinefield(data)
         
         const tempNotMines = new Set()
-        response.data.forEach((row, rowIndex) => {
+        data.forEach((row, rowIndex) => {
           row.forEach((cell, colIndex) => {
             if(!cell.mine) { tempNotMines.add(`${rowIndex}-${colIndex}`)}
           })
