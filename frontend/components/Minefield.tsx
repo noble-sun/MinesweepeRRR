@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { Cell } from './Cell.tsx'
 import GameInfoBar from './GameInfoBar.tsx'
-import { adjacentCellsToExpand } from '../helpers/adjacentCellsToExpand.ts'
 import { useMinefield } from '../hooks/useMinefield.ts'
+import { useRevealCells } from '../hooks/useRevealCells.ts'
 
 export default function Minefield(
   {startTimer, stopTimer, gameIsRunning, onExplode, exploded, onFlagCellChange, gameWon}: {
@@ -16,10 +16,15 @@ export default function Minefield(
   }
 ) {
 
-  const { minefield, hiddenNonMinesCells, setHiddenNonMinesCells } = useMinefield()
-
+  const [question, setQuestion] = useState<Set<string>>(new Set())
   const [flaggedCells, setFlaggedCells] = useState<Set<string>>(new Set())
-  const [revealedCells, setRevealedCells] = useState<Set<string>>(new Set())
+  const { minefield, hiddenNonMinesCells, setHiddenNonMinesCells } = useMinefield()
+  const {
+    revealedCells,
+    revealCell,
+    expandAdjacentCells
+  } = useRevealCells(minefield, flaggedCells, question, setHiddenNonMinesCells)
+
   const handleClick = (row: number, col: number, hasMine: boolean, flagged: boolean) => {
     if(!gameIsRunning) { startTimer() }
 
@@ -33,44 +38,8 @@ export default function Minefield(
 
     if(hasMine) { loser() }
 
-    setRevealedCells(prev => new Set(prev).add(key))
+    revealCell(row, col)
     expandAdjacentCells(row, col) 
-  }
-
-  const expandAdjacentCells = (row: number, col: number, visited: Set<string> = new Set()) => {
-    const key = `${row}-${col}`
-    if (visited.has(key)) return
-    visited.add(key)
-
-    const expandedCellsRevealed = []
-    if (minefield[row][col].clue === 0) {
-      const adjacentCellsNotYetRevealed = adjacentCellsToExpand(
-        row,
-        col,
-        minefield,
-        flaggedCells,
-        revealedCells,
-        question
-      )
-
-      adjacentCellsNotYetRevealed.map(([tRow, tCol]: [number, number]) => {
-        const key = `${tRow}-${tCol}`
-        setRevealedCells(prev => new Set(prev).add(key))
-        setHiddenNonMinesCells(prev => {
-          const nm = new Set(prev)
-          nm.delete(key)
-          return nm
-        })
-      })
-
-      const cellsToExpand = adjacentCellsNotYetRevealed.filter(([aRow, aCol]) => {
-        return minefield[aRow][aCol].clue === 0
-      })
-
-      cellsToExpand.map(([cRow, cCol]) => {
-        expandAdjacentCells(cRow, cCol, visited)
-      })
-    }
   }
 
   const handleRightClick = (row: number, col: number) => {
@@ -99,7 +68,6 @@ export default function Minefield(
     setFlaggedCells(prevFlagged => new Set(prevFlagged).add(key))
   }
 
-  const [question, setQuestion] = useState<Set<string>>(new Set())
   const placeQuestion = (row: number, col: number) => {
     const key = `${row}-${col}`
     setQuestion(prevQuestion => new Set(prevQuestion).add(key))
