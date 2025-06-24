@@ -73,8 +73,11 @@ export const useCellInteraction = (
     const key = `${row}-${col}`
     if (revealedCells.has(key)) return
 
-    const placeMineIndicationFlag = flaggedCells.has(key) ? placeQuestionMark(key) : placeFlag(key)
-    questionMarkedCells.has(key) ? removeQuestionMark(key) : placeMineIndicationFlag
+    const placeMineIndicationFlag = () => {
+      flaggedCells.has(key) ? placeQuestionMark(key) : placeFlag(key)
+    }
+
+    questionMarkedCells.has(key) ? removeQuestionMark(key) : placeMineIndicationFlag()
   }
 
   return {
