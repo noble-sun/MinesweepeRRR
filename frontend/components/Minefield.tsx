@@ -3,6 +3,7 @@ import { Cell } from './Cell.tsx'
 import GameInfoBar from './GameInfoBar.tsx'
 import { useMinefield } from '../hooks/useMinefield.ts'
 import { useRevealCells } from '../hooks/useRevealCells.ts'
+import { useFlags } from '../hooks/useFlags.ts'
 
 export default function Minefield(
   {startTimer, stopTimer, gameIsRunning, onExplode, exploded, onFlagCellChange, gameWon}: {
@@ -16,20 +17,28 @@ export default function Minefield(
   }
 ) {
 
-  const [question, setQuestion] = useState<Set<string>>(new Set())
-  const [flaggedCells, setFlaggedCells] = useState<Set<string>>(new Set())
   const { minefield, hiddenNonMinesCells, setHiddenNonMinesCells } = useMinefield()
+
+  const {
+    flaggedCells,
+    questionMarkedCells,
+    placeFlag,
+    placeQuestionMark,
+    removeQuestionMark
+  } = useFlags(onFlagCellChange)
+
   const {
     revealedCells,
     revealCell,
     expandAdjacentCells
-  } = useRevealCells(minefield, flaggedCells, question, setHiddenNonMinesCells)
+  } = useRevealCells(minefield, flaggedCells, questionMarkedCells, setHiddenNonMinesCells)
+
 
   const handleClick = (row: number, col: number, hasMine: boolean, flagged: boolean) => {
     if(!gameIsRunning) { startTimer() }
 
     const key = `${row}-${col}`
-    if(flaggedCells.has(key) || question.has(key)) { return }
+    if(flaggedCells.has(key) || questionMarkedCells.has(key)) { return }
     setHiddenNonMinesCells(prev => {
       const nm = new Set(prev)
       nm.delete(key)
@@ -48,44 +57,16 @@ export default function Minefield(
     
     if (revealedCells.has(key)) return
 
-    if (question.has(key)) {
-      setQuestion(prevQuestion => {
-        const questionMarked = new Set(prevQuestion)
-        questionMarked.delete(key)
-
-        return questionMarked
-      })
+    if (questionMarkedCells.has(key)) {
+      removeQuestionMark(key)
     } else {
-      flaggedCells.has(key) ? placeQuestion(row, col) : placeFlag(row, col)
+      flaggedCells.has(key) ? placeQuestionMark(key) : placeFlag(key)
     }
-  }
-
-  const placeFlag = (row: number, col: number) => {
-    const key = `${row}-${col}`
-    const updateMineCountBy = flaggedCells.has(key) ? 1 : -1
-    onFlagCellChange(updateMineCountBy)
-
-    setFlaggedCells(prevFlagged => new Set(prevFlagged).add(key))
-  }
-
-  const placeQuestion = (row: number, col: number) => {
-    const key = `${row}-${col}`
-    setQuestion(prevQuestion => new Set(prevQuestion).add(key))
-
-    const updateMineCountBy = flaggedCells.has(key) ? 1 : -1
-    onFlagCellChange(updateMineCountBy)
-
-    setFlaggedCells(prevFlagged => {
-      const flagged = new Set(prevFlagged)
-      flagged.delete(key)
-      return flagged
-    })
   }
 
   useEffect(() => {
     if(hiddenNonMinesCells.size === 0 && minefield.length > 0) { winner() }
   })
-
 
   const winner = () => {
     stopTimer()
@@ -115,7 +96,7 @@ export default function Minefield(
               clue={cell.clue}
               exploded={exploded}
               flagged={flaggedCells.has(`${rowIndex}-${colIndex}`)}
-              questionMarked={question.has(`${rowIndex}-${colIndex}`)}
+              questionMarked={questionMarkedCells.has(`${rowIndex}-${colIndex}`)}
             />
           ))}
         </div>
