@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react'
 
 import GameInfoBar from '../components/GameInfoBar.tsx'
 import Minefield from '../components/Minefield.tsx'
+import { GameProvider } from '../contexts/GameContext.tsx'
 
 function App() {
   const [exploded, setExploded] = useState(false)
@@ -53,17 +54,19 @@ function App() {
   }
   return (
     <>
-      <div>{renderGameStatus()}</div>
-      <GameInfoBar time={time} exploded={exploded} mineCount={mineCount} />
-      <Minefield
-        startTimer={startTimer}
-        stopTimer={stopTimer}
-        gameIsRunning={gameIsRunning}
-        onExplode={() => setExploded(true)}
-        exploded={exploded}
-        onFlagCellChange={updateMineCount}
-        gameWon={updateGameStatus}
-      />
+      <GameProvider>
+        <div>{renderGameStatus()}</div>
+        <GameInfoBar time={time} exploded={exploded} mineCount={mineCount} />
+        <Minefield
+          startTimer={startTimer}
+          stopTimer={stopTimer}
+          gameIsRunning={gameIsRunning}
+          onExplode={() => setExploded(true)}
+          exploded={exploded}
+          onFlagCellChange={updateMineCount}
+          gameWon={updateGameStatus}
+        />
+      </GameProvider>
     </>
   )
 }

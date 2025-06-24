@@ -1,19 +1,26 @@
-import { useState } from 'react'
+//import { useState } from 'react'
 import { adjacentCellsToExpand } from '../helpers/adjacentCellsToExpand.ts'
 import type { Minefield } from '../src/utils/api'
+import { useGameContext } from '../contexts/GameContext.tsx'
 
 export const useRevealCells = (
   minefield: Minefield,
-  flaggedCells: Set<string>,
-  questionMarkedCells: Set<string>,
-  setHiddenNonMinesCells: (v: Set<string>) => void
+  //flaggedCells: Set<string>,
+  //questionMarkedCells: Set<string>,
+  //setHiddenNonMinesCells: (v: Set<string>) => void
 ) => {
-  const [revealedCells, setRevealedCells] = useState<Set<string>>(new Set())
+  //const [revealedCells, setRevealedCells] = useState<Set<string>>(new Set())
+  const {
+    flaggedCells,
+    questionMarkedCells,
+    revealedCells, setRevealedCells,
+    safeUnrevealedCells, setSafeUnrevealedCells
+  } = useGameContext()
 
   const revealCell = (row: number, col: number) => {
     const key = `${row}-${col}`
     setRevealedCells(prev => new Set(prev).add(key))
-    setHiddenNonMinesCells(prev => {
+    setSafeUnrevealedCells(prev => {
       const cells = new Set(prev)
       cells.delete(key)
       return cells
@@ -43,5 +50,6 @@ export const useRevealCells = (
     }
   }
 
-  return { revealedCells, revealCell, expandAdjacentCells }
+  return { revealCell, expandAdjacentCells }
+  //return { revealedCells, revealCell, expandAdjacentCells }
 }

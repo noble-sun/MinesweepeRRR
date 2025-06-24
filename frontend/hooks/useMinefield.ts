@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react'
 import minesweeperApi, { Minefield as MinefieldType } from '../src/utils/api.ts'
+import { useGameContext } from '../contexts/GameContext.tsx'
 
 export const useMinefield = () => {
   const [minefield, setMinefield] = useState<MinefieldType>([])
-  const [hiddenNonMinesCells, setHiddenNonMinesCells] = useState<Set<string>>(new Set())
+  //const [hiddenNonMinesCells, setHiddenNonMinesCells] = useState<Set<string>>(new Set())
+
+  const { setSafeUnrevealedCells } = useGameContext()
 
   useEffect(() => {
     minesweeperApi.generateMinefield()
@@ -16,12 +19,12 @@ export const useMinefield = () => {
             if (!cell.mine) tempNonMines.add(`${rowIndex}-${colIndex}`)
           })
         })
-        setHiddenNonMinesCells(tempNonMines)
+        setSafeUnrevealedCells(tempNonMines)
       })
       .catch(error => {
         console.log(error)
       })
   }, [])
 
-  return { minefield, hiddenNonMinesCells, setHiddenNonMinesCells }
+  return { minefield }
 }

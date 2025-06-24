@@ -1,8 +1,14 @@
-import { useState } from 'react'
+//import { useState } from 'react'
+import { useGameContext } from '../contexts/GameContext.tsx'
 
 export const useFlags = (onFlagCellChange: (delta: number) => void) => {
-  const [flaggedCells, setFlaggedCells] = useState<Set<string>>(new Set())
-  const [questionMarkedCells, setQuestionMarkedCells] = useState<Set<string>>(new Set())
+  //const [flaggedCells, setFlaggedCells] = useState<Set<string>>(new Set())
+  //const [questionMarkedCells, setQuestionMarkedCells] = useState<Set<string>>(new Set())
+
+  const {
+    flaggedCells, setFlaggedCells,
+    questionMarkedCells, setQuestionMarkedCells
+  } = useGameContext()
 
   const placeFlag = (key: string) => {
     if (!flaggedCells.has(key)) {
@@ -33,8 +39,8 @@ export const useFlags = (onFlagCellChange: (delta: number) => void) => {
   }
 
   return {
-    flaggedCells,
-    questionMarkedCells,
+    //flaggedCells,
+    //questionMarkedCells,
     placeFlag,
     placeQuestionMark,
     removeQuestionMark

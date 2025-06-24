@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { Cell } from './Cell.tsx'
 import GameInfoBar from './GameInfoBar.tsx'
 import { useMinefield } from '../hooks/useMinefield.ts'
-import { useRevealCells } from '../hooks/useRevealCells.ts'
-import { useFlags } from '../hooks/useFlags.ts'
+import { useCellInteraction } from '../hooks/useCellInteraction.ts'
+import { useGameContext } from '../contexts/GameContext.tsx'
 
 export default function Minefield(
   {startTimer, stopTimer, gameIsRunning, onExplode, exploded, onFlagCellChange, gameWon}: {
@@ -16,68 +16,34 @@ export default function Minefield(
     gameWon: () => void
   }
 ) {
-
-  const { minefield, hiddenNonMinesCells, setHiddenNonMinesCells } = useMinefield()
-
+  //const { minefield, hiddenNonMinesCells, setHiddenNonMinesCells } = useMinefield()
+  const { minefield } = useMinefield()
   const {
-    flaggedCells,
-    questionMarkedCells,
-    placeFlag,
-    placeQuestionMark,
-    removeQuestionMark
-  } = useFlags(onFlagCellChange)
+    onClick,
+    onRightClick,
+    //revealedCells,
+    //flaggedCells,
+    //questionMarkedCells,
+    currentGameWon
+  } = useCellInteraction(
+    minefield,
+    //hiddenNonMinesCells,
+    //setHiddenNonMinesCells,
+    gameIsRunning,
+    startTimer,
+    onExplode,
+    gameWon,
+    stopTimer,
+    onFlagCellChange
+  )
 
-  const {
-    revealedCells,
-    revealCell,
-    expandAdjacentCells
-  } = useRevealCells(minefield, flaggedCells, questionMarkedCells, setHiddenNonMinesCells)
-
-
-  const handleClick = (row: number, col: number, hasMine: boolean, flagged: boolean) => {
-    if(!gameIsRunning) { startTimer() }
-
-    const key = `${row}-${col}`
-    if(flaggedCells.has(key) || questionMarkedCells.has(key)) { return }
-    setHiddenNonMinesCells(prev => {
-      const nm = new Set(prev)
-      nm.delete(key)
-      return nm
-    })
-
-    if(hasMine) { loser() }
-
-    revealCell(row, col)
-    expandAdjacentCells(row, col) 
-  }
-
-  const handleRightClick = (row: number, col: number) => {
-    if(!gameIsRunning) { startTimer() }
-    const key = `${row}-${col}`
-    
-    if (revealedCells.has(key)) return
-
-    if (questionMarkedCells.has(key)) {
-      removeQuestionMark(key)
-    } else {
-      flaggedCells.has(key) ? placeQuestionMark(key) : placeFlag(key)
-    }
-  }
+  const {  revealedCells, flaggedCells, questionMarkedCells, safeUnrevealedCells } = useGameContext()
 
   useEffect(() => {
-    if(hiddenNonMinesCells.size === 0 && minefield.length > 0) { winner() }
-  })
+    console.log(safeUnrevealedCells.size)
+    if(safeUnrevealedCells.size === 0 && minefield.length > 0) currentGameWon()
+  }, [safeUnrevealedCells])
 
-  const winner = () => {
-    stopTimer()
-    gameWon(true)
-  }
-
-  const loser = () => {
-    stopTimer()
-    onExplode()
-    gameWon(false)
-  }
 
   return (
     <>
@@ -90,8 +56,8 @@ export default function Minefield(
               row={rowIndex}
               col={colIndex}
               isRevealed={revealedCells.has(`${rowIndex}-${colIndex}`)}
-              onClick={handleClick}
-              onRightClick={handleRightClick}
+              onClick={onClick}
+              onRightClick={onRightClick}
               hasMine={cell.mine}
               clue={cell.clue}
               exploded={exploded}
