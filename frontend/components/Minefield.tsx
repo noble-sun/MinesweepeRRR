@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { Cell } from './Cell.tsx'
-import GameInfoBar from './GameInfoBar.tsx'
 import { useMinefield } from '../hooks/useMinefield.ts'
 import { useCellInteraction } from '../hooks/useCellInteraction.ts'
 import { useGameContext } from '../contexts/GameContext.tsx'
@@ -12,8 +11,8 @@ export default function Minefield(
     gameIsRunning: boolean,
     onExplode: () => void,
     exploded: boolean,
-    onFlagCellChange: () => void,
-    gameWon: () => void
+    onFlagCellChange: (v: number) => void,
+    gameWon: (v: boolean) => void
   }
 ) {
   const { minefield } = useMinefield()

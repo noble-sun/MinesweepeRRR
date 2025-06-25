@@ -1,7 +1,9 @@
+import  { Minefield } from '../src/utils/api.ts'
+
 export const adjacentCellsToExpand = (
   row: number,
   col: number,
-  minefield: Cell[][],
+  minefield: Minefield,
   flaggedCells: Set<string>,
   revealedCells: Set<string>,
   questionMarkedCells: Set<string>

@@ -17,7 +17,7 @@ export const useCellInteraction = (
     flaggedCells,
     questionMarkedCells,
     revealedCells,
-    safeUnrevealedCells, setSafeUnrevealedCells
+    setSafeUnrevealedCells
   } = useGameContext()
 
   const {
@@ -42,7 +42,7 @@ export const useCellInteraction = (
     gameWon(true)
   }
 
-  const onClick = (row: number, col: number, hasMine: boolean, flagged: boolean) => {
+  const onClick = (row: number, col: number, hasMine: boolean) => {
     if (!gameIsRunning) startTimer()
     
     const key = `${row}-${col}`

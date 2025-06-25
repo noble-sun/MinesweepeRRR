@@ -4,7 +4,7 @@ export const useFlags = (onFlagCellChange: (delta: number) => void) => {
 
   const {
     flaggedCells, setFlaggedCells,
-    questionMarkedCells, setQuestionMarkedCells
+    setQuestionMarkedCells
   } = useGameContext()
 
   const placeFlag = (key: string) => {

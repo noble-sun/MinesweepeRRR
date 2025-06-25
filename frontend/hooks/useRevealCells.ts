@@ -7,7 +7,7 @@ export const useRevealCells = (minefield: Minefield) => {
     flaggedCells,
     questionMarkedCells,
     revealedCells, setRevealedCells,
-    safeUnrevealedCells, setSafeUnrevealedCells
+    setSafeUnrevealedCells
   } = useGameContext()
 
   const revealCell = (row: number, col: number) => {

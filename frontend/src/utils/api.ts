@@ -2,7 +2,12 @@ import axios, { AxiosError, Method } from 'axios'
 
 interface APIOptions {
   baseUrl: string
-  headers: Record<string, string>
+  headers?: Record<string, string>
+}
+
+interface APIError {
+  status: number
+  message: string
 }
 
 export interface MineCell {
@@ -13,6 +18,15 @@ export interface MineCell {
 }
 
 export type Minefield = MineCell[][]
+
+function isAPIErrorResponse(data: unknown): data is { message: string } {
+  return (
+    typeof data === 'object' &&
+    data !== null &&
+    'message' in data &&
+    typeof data.message === 'string'
+  )
+}
 
 class API {
   private _url: string
@@ -42,10 +56,7 @@ class API {
 
       const errorData: APIError = {
         status: err.response?.status || 500,
-        message:
-          typeof err.response?.data === 'object' && (err.response?.data as unknown)?.message
-            ? (err.response?.data as unknown).message
-            : err.message,
+        message: isAPIErrorResponse(err.response?.data) ? err.response!.data.message : err.message,
       }
 
       return Promise.reject(errorData)

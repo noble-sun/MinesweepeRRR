@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import minesweeperApi, { Minefield as MinefieldType } from '../src/utils/api.ts'
+import minesweeperApi, { Minefield as MinefieldType, MineCell } from '../src/utils/api.ts'
 import { useGameContext } from '../contexts/GameContext.tsx'
 
 export const useMinefield = () => {
@@ -8,12 +8,12 @@ export const useMinefield = () => {
 
   useEffect(() => {
     minesweeperApi.generateMinefield()
-      .then((data: Minefieldtype) => {
+      .then((data: MinefieldType) => {
         setMinefield(data)
 
         const tempNonMines = new Set<string>()
-        data.forEach((row, rowIndex) => {
-          row.forEach((cell, colIndex) => {
+        data.forEach((row: MineCell[], rowIndex: number) => {
+          row.forEach((cell: MineCell, colIndex: number) => {
             if (!cell.mine) tempNonMines.add(`${rowIndex}-${colIndex}`)
           })
         })

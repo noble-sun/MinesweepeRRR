@@ -10,7 +10,7 @@ type GameContextType = {
   setQuestionMarkedCells: React.Dispatch<React.SetStateAction<Set<CellKey>>>
 
   revealedCells: Set<CellKey>
-  SetRevealedCells: React.Dispatch<React.SetStateAction<Set<CellKey>>>
+  setRevealedCells: React.Dispatch<React.SetStateAction<Set<CellKey>>>
 
   safeUnrevealedCells: Set<CellKey>
   setSafeUnrevealedCells: React.Dispatch<React.SetStateAction<Set<CellKey>>>

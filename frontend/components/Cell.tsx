@@ -1,5 +1,4 @@
-import React from 'react'
-import { CellProps } from './types'
+import { CellProps } from './Cell.types.tsx'
 import flag from '../src/assets/flag.svg'
 import questionMark from '../src/assets/questionMark.svg'
 import mine from '../src/assets/mine.svg'

@@ -1,6 +1,6 @@
 import './App.css'
 
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import GameInfoBar from '../components/GameInfoBar.tsx'
 import Minefield from '../components/Minefield.tsx'
@@ -37,12 +37,12 @@ function App() {
   }, [])
 
   const [mineCount, setMineCount] = useState(40)
-  const updateMineCount = (value) => {
+  const updateMineCount = (value: number) => {
     setMineCount((prevCount) => prevCount + value)
   }
 
   const [gameWon, setGameWon] = useState<boolean | null>(null)
-  const updateGameStatus = (value) => {
+  const updateGameStatus = (value: boolean) => {
     setGameWon(value)
   }
 

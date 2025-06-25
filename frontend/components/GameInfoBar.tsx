@@ -1,4 +1,3 @@
-import React, { useState, useEffect, useRef } from 'react'
 import smileFaceIcon from '../src/assets/smileFace.svg'
 import deadFaceIcon from '../src/assets/deadFace.svg'
 
