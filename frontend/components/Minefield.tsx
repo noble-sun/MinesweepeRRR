@@ -16,19 +16,13 @@ export default function Minefield(
     gameWon: () => void
   }
 ) {
-  //const { minefield, hiddenNonMinesCells, setHiddenNonMinesCells } = useMinefield()
   const { minefield } = useMinefield()
   const {
     onClick,
     onRightClick,
-    //revealedCells,
-    //flaggedCells,
-    //questionMarkedCells,
     currentGameWon
   } = useCellInteraction(
     minefield,
-    //hiddenNonMinesCells,
-    //setHiddenNonMinesCells,
     gameIsRunning,
     startTimer,
     onExplode,
@@ -37,7 +31,7 @@ export default function Minefield(
     onFlagCellChange
   )
 
-  const {  revealedCells, flaggedCells, questionMarkedCells, safeUnrevealedCells } = useGameContext()
+  const { revealedCells, flaggedCells, questionMarkedCells, safeUnrevealedCells } = useGameContext()
 
   useEffect(() => {
     console.log(safeUnrevealedCells.size)

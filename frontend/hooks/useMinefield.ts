@@ -4,8 +4,6 @@ import { useGameContext } from '../contexts/GameContext.tsx'
 
 export const useMinefield = () => {
   const [minefield, setMinefield] = useState<MinefieldType>([])
-  //const [hiddenNonMinesCells, setHiddenNonMinesCells] = useState<Set<string>>(new Set())
-
   const { setSafeUnrevealedCells } = useGameContext()
 
   useEffect(() => {

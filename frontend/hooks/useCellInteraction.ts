@@ -5,8 +5,6 @@ import { useGameContext } from '../contexts/GameContext.tsx'
 
 export const useCellInteraction = (
   minefield: Minefield,
-  //hiddenNonMinesCells: Set<string>,
-  //setHiddenNonMinesCells: (v: Set<string>) => void,
   gameIsRunning: boolean,
   startTimer: () => void,
   onExplode: () => void,
@@ -23,19 +21,15 @@ export const useCellInteraction = (
   } = useGameContext()
 
   const {
-    //flaggedCells,
-    //questionMarkedCells,
     placeFlag,
     placeQuestionMark,
     removeQuestionMark
   } = useFlags(onFlagCellChange)
 
   const {
-    //revealedCells,
     revealCell,
     expandAdjacentCells
   } = useRevealCells(minefield)
-  //} = useRevealCells(minefield, flaggedCells, questionMarkedCells, setHiddenNonMinesCells)
 
   const currentGameLost = () => {
     stopTimer()
@@ -83,9 +77,6 @@ export const useCellInteraction = (
   return {
     onClick,
     onRightClick,
-    revealedCells,
-    flaggedCells,
-    questionMarkedCells,
     currentGameWon
   }
 }
