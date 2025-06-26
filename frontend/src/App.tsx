@@ -1,33 +1,72 @@
 import './App.css'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
-import viteLogo from '/vite.svg'
-
-import reactLogo from './assets/react.svg'
+import GameInfoBar from '../components/GameInfoBar.tsx'
+import Minefield from '../components/Minefield.tsx'
+import { GameProvider } from '../contexts/GameContext.tsx'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [exploded, setExploded] = useState(false)
 
+  const [time, setTime] = useState(0)
+  const [gameIsRunning, setGameIsRunning] = useState(false)
+  const timerRef = useRef<NodeJS.Timeout | null>(null)
+
+  const startTimer = () => {
+    if (!gameIsRunning) {
+      setGameIsRunning(true)
+      timerRef.current = setInterval(() => {
+        setTime((prev) => prev + 1)
+      }, 1000)
+    }
+  }
+
+  const stopTimer = () => {
+    setGameIsRunning(false)
+    if (timerRef.current) {
+      clearInterval(timerRef.current)
+      timerRef.current = null
+    }
+  }
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current)
+    }
+  }, [])
+
+  const [mineCount, setMineCount] = useState(40)
+  const updateMineCount = (value: number) => {
+    setMineCount((prevCount) => prevCount + value)
+  }
+
+  const [gameWon, setGameWon] = useState<boolean | null>(null)
+  const updateGameStatus = (value: boolean) => {
+    setGameWon(value)
+  }
+
+  const renderGameStatus = () => {
+    if (gameWon === null) return
+    const text = gameWon ? 'You Won!!!' : 'You Lost!'
+
+    return <span>{text}</span>
+  }
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
-      <p className="font-bold text-blue-300 text-2xl mt-4">Tailwind CSS is also working!</p>
+      <GameProvider>
+        <div>{renderGameStatus()}</div>
+        <GameInfoBar time={time} exploded={exploded} mineCount={mineCount} />
+        <Minefield
+          startTimer={startTimer}
+          stopTimer={stopTimer}
+          gameIsRunning={gameIsRunning}
+          onExplode={() => setExploded(true)}
+          exploded={exploded}
+          onFlagCellChange={updateMineCount}
+          gameWon={updateGameStatus}
+        />
+      </GameProvider>
     </>
   )
 }

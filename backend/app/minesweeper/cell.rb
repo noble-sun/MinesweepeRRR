@@ -1,4 +1,5 @@
 class AddClueError < StandardError; end
+class NoMineError < StandardError; end
 
 class Cell
   def initialize(x:, y:)
@@ -16,6 +17,12 @@ class Cell
     raise AddClueError.new("Cannot add clue when there's a mine") if mine?
 
     @clue += 1
+  end
+
+  def set_clue_as_mine
+    raise NoMineError.new("Cannot define clue as mine when there isn't a mine placed") unless mine?
+
+    @clue = nil
   end
 
   def place_mine; @mine = true end
