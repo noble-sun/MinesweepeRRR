@@ -10,7 +10,7 @@ function App() {
   const [exploded, setExploded] = useState(false)
 
   const [time, setTime] = useState(0)
-  const [gameIsRunning, setGameIsRunning] = useState(false)
+  const [gameIsRunning, setGameIsRunning] = useState<boolean | null>(null)
   const timerRef = useRef<NodeJS.Timeout | null>(null)
 
   const startTimer = () => {
