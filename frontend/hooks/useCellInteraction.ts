@@ -63,6 +63,7 @@ export const useCellInteraction = (
 
   const onRightClick = (row: number, col: number) => {
     if (gameIsRunning == null) startTimer()
+    if (!gameIsRunning) return
 
     const key = `${row}-${col}`
     if (revealedCells.has(key)) return
