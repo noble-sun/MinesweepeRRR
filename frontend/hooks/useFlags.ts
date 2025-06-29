@@ -4,7 +4,7 @@ export const useFlags = (onFlagCellChange: (delta: number) => void) => {
 
   const {
     flaggedCells, setFlaggedCells,
-    setQuestionMarkedCells
+    questionMarkedCells, setQuestionMarkedCells
   } = useGameContext()
 
   const placeFlag = (key: string) => {
@@ -15,7 +15,6 @@ export const useFlags = (onFlagCellChange: (delta: number) => void) => {
   }
 
   const placeQuestionMark = (key: string) => {
-    console.log("flagged Cells: ", flaggedCells)
     if (!flaggedCells.has(key)) return
 
     setQuestionMarkedCells(prev => new Set(prev).add(key))
@@ -29,6 +28,8 @@ export const useFlags = (onFlagCellChange: (delta: number) => void) => {
   }
 
   const removeQuestionMark = (key: string) => {
+    if(!questionMarkedCells.has(key)) return
+
     setQuestionMarkedCells(prev => {
       const cells = new Set(prev)
       cells.delete(key)
