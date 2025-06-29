@@ -15,16 +15,17 @@ export const useFlags = (onFlagCellChange: (delta: number) => void) => {
   }
 
   const placeQuestionMark = (key: string) => {
+    console.log("flagged Cells: ", flaggedCells)
+    if (!flaggedCells.has(key)) return
+
     setQuestionMarkedCells(prev => new Set(prev).add(key))
 
-    if (flaggedCells.has(key)) {
-      onFlagCellChange(1)
-      setFlaggedCells(prev => {
-        const cells = new Set(prev)
-        cells.delete(key)
-        return cells
-      })
-    }
+    setFlaggedCells(prev => {
+      const cells = new Set(prev)
+      cells.delete(key)
+      return cells
+    })
+    onFlagCellChange(1)
   }
 
   const removeQuestionMark = (key: string) => {

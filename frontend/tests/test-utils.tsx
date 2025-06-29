@@ -1,13 +1,31 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode, forwardRef, useImperativeHandle } from 'react'
 import { GameProvider } from '../contexts/GameContext'
-import { renderHook, RenderHookResult } from '@testing-library/react'
+import { render } from '@testing-library/react'
 
-export const gameContextWrapper = ({ children }: { children: ReactNode }) => {
-  return <GameProvider>{children}</GameProvider>
-}
+type HookResults<T> = { current: T | null }
 
-export const renderHookWithGameProvider = <T,>(
-  hook: () => T
-): RenderHookResult<unknown, T> => {
-    return renderHook(hook, { wrapper: gameContextWrapper })
+export function renderHookWithGameContext<T>(
+  useHooks: () => T
+): HookResults<T> {
+  const result: HookResults<T> = { current: null }
+
+  // Component can now receive a ref with forwardRef
+  const TestComponent = forwardRef((_, ref) => {
+    // Runs the hooks
+    const hooks = useHooks()
+    // Customize what the ref exposes to the parent. In this case it is exposing
+    // the hooks declared above.
+    // [hooks] says to only re-render if hooks are updated
+    useImperativeHandle(ref, () => hooks, [hooks])
+    // Since only the hooks are needed, this will render nothing
+    return null
+  })
+
+  render(
+    <GameProvider>
+      <TestComponent ref={(val) => (result.current = val)} />
+    </GameProvider>
+  )
+
+  return result
 }
