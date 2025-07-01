@@ -2,8 +2,7 @@ import { renderHook, waitFor } from '@testing-library/react'
 import { useMinefield } from '../../hooks/useMinefield'
 import { useGameContext } from '../../contexts/GameContext'
 import { renderHookWithGameContext } from '../test-utils'
-import minesweeperApi, { Minefield as MinefieldType, MineCell } from '../../src/utils/api.ts'
-import axios from 'axios'
+import minesweeperApi from '../../src/utils/api.ts'
 
 describe('useMinefield', () => {
   it('should return the initial value for minefield', async () => {
