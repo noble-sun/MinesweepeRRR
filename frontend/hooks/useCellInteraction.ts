@@ -5,7 +5,7 @@ import { useGameContext } from '../contexts/GameContext.tsx'
 
 export const useCellInteraction = (
   minefield: Minefield,
-  gameIsRunning: boolean,
+  gameIsRunning: boolean | null,
   startTimer: () => void,
   onExplode: () => void,
   gameWon: (won: boolean) => void,
