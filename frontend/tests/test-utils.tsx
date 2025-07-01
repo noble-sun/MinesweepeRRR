@@ -1,11 +1,12 @@
 import React, { ReactNode, forwardRef, useImperativeHandle } from 'react'
-import { GameProvider } from '../contexts/GameContext'
+import { GameProvider, GameContextType } from '../contexts/GameContext'
 import { render } from '@testing-library/react'
 
 type HookResults<T> = { current: T | null }
 
 export function renderHookWithGameContext<T>(
-  useHooks: () => T
+  useHooks: () => T,
+  overrideStatesWithMock: Partial<GameContextType> = {}
 ): HookResults<T> {
   const result: HookResults<T> = { current: null }
 
@@ -22,7 +23,7 @@ export function renderHookWithGameContext<T>(
   })
 
   render(
-    <GameProvider>
+    <GameProvider value={overrideStatesWithMock}>
       <TestComponent ref={(val) => (result.current = val)} />
     </GameProvider>
   )

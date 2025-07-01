@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, ReactNode } from 'react'
 
 type CellKey = string
 
-type GameContextType = {
+export type GameContextType = {
   flaggedCells: Set<CellKey>
   setFlaggedCells: React.Dispatch<React.SetStateAction<Set<CellKey>>>
 
@@ -17,8 +17,12 @@ type GameContextType = {
 }
 
 const GameContext = createContext<GameContextType | undefined>(undefined)
+type GameProviderProps = {
+  children: ReactNode,
+  value?: Partial<GameContextType>
+}
 
-export const GameProvider = ({children}: { children: ReactNode}) => {
+export const GameProvider = ({children, value = {}}: GameProviderProps) => {
   const [flaggedCells, setFlaggedCells] = useState<Set<CellKey>>(new Set())
   const [questionMarkedCells, setQuestionMarkedCells] = useState<Set<CellKey>>(new Set())
   const [revealedCells, setRevealedCells] = useState<Set<CellKey>>(new Set())
@@ -26,10 +30,14 @@ export const GameProvider = ({children}: { children: ReactNode}) => {
 
   return (
     <GameContext.Provider value={{
-      flaggedCells, setFlaggedCells,
-      questionMarkedCells, setQuestionMarkedCells,
-      revealedCells, setRevealedCells,
-      safeUnrevealedCells, setSafeUnrevealedCells
+      flaggedCells: value.flaggedCells ?? flaggedCells,
+      setFlaggedCells: value.setFlaggedCells ?? setFlaggedCells,
+      questionMarkedCells: value.questionMarkedCells ?? questionMarkedCells,
+      setQuestionMarkedCells: value.setQuestionMarkedCells ?? setQuestionMarkedCells,
+      revealedCells: value.revealedCells ?? revealedCells,
+      setRevealedCells: value.setRevealedCells ?? setRevealedCells,
+      safeUnrevealedCells: value.safeUnrevealedCells ?? safeUnrevealedCells,
+      setSafeUnrevealedCells: value.setSafeUnrevealedCells ?? setSafeUnrevealedCells
     }}>
       {children}
     </GameContext.Provider>
