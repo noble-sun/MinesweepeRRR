@@ -65,3 +65,4 @@ docker exec -it frontend sh
 - [ ] Different board levels
 - [ ] Custom boards
 - [ ] Assign keyboard shortcuts for actions
+- [ ] Provide help/clue button

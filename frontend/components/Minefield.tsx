@@ -8,7 +8,7 @@ export default function Minefield(
   {startTimer, stopTimer, gameIsRunning, onExplode, exploded, onFlagCellChange, gameWon}: {
     startTimer: () => void,
     stopTimer: () => void,
-    gameIsRunning: boolean,
+    gameIsRunning: boolean | null,
     onExplode: () => void,
     exploded: boolean,
     onFlagCellChange: (v: number) => void,

@@ -5,7 +5,7 @@ import { useGameContext } from '../contexts/GameContext.tsx'
 
 export const useCellInteraction = (
   minefield: Minefield,
-  gameIsRunning: boolean,
+  gameIsRunning: boolean | null,
   startTimer: () => void,
   onExplode: () => void,
   gameWon: (won: boolean) => void,
@@ -43,7 +43,7 @@ export const useCellInteraction = (
   }
 
   const onClick = (row: number, col: number, hasMine: boolean) => {
-    if (!gameIsRunning) startTimer()
+    if (gameIsRunning == null) startTimer()
     
     const key = `${row}-${col}`
     if (flaggedCells.has(key) || questionMarkedCells.has(key)) return
@@ -62,7 +62,8 @@ export const useCellInteraction = (
   }
 
   const onRightClick = (row: number, col: number) => {
-    if (!gameIsRunning) startTimer()
+    if (gameIsRunning == null) startTimer()
+    if (!gameIsRunning) return
 
     const key = `${row}-${col}`
     if (revealedCells.has(key)) return

@@ -12,6 +12,8 @@ export const useRevealCells = (minefield: Minefield) => {
 
   const revealCell = (row: number, col: number) => {
     const key = `${row}-${col}`
+    if (revealedCells.has(key)) return
+
     setRevealedCells(prev => new Set(prev).add(key))
     setSafeUnrevealedCells(prev => {
       const cells = new Set(prev)
