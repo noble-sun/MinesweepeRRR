@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import Minefield from '../../components/Minefield'
 import { GameProvider } from '../../contexts/GameContext.tsx'
 import * as useCellInteractionModule from '../../hooks/useCellInteraction'

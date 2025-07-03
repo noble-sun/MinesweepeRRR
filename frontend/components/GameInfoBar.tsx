@@ -1,3 +1,4 @@
+import React from 'react'
 import smileFaceIcon from '../src/assets/smileFace.svg'
 import deadFaceIcon from '../src/assets/deadFace.svg'
 
@@ -11,7 +12,7 @@ export default function GameInfoBar(
       <div className="flex justify-between items-center py-3">
         <span className="flex flex-1 justify-center border p-2"> Mines: {mineCount}</span>
         <div className="cursor-pointer flex flex-1 justify-center" onClick={() => { window.location.reload() }}>
-          { exploded ? <img src={deadFaceIcon}/> : <img src={smileFaceIcon} /> }
+          { exploded ? <img src={deadFaceIcon} alt="dead face"/> : <img src={smileFaceIcon} alt="smile face"/> }
         </div>
         <span className="flex flex-1 justify-center border p-2"> Time: {paddedTime} </span>
       </div>
