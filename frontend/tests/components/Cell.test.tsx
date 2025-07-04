@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
-import { Cell } from '../../components/Cell'
+import { Cell } from '../../src/components/Cell'
 
 describe('Cell component', () => {
   describe("when 'isRevealed' is true", () => {

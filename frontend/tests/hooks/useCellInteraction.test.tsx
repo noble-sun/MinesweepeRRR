@@ -1,9 +1,9 @@
 import { renderHook, act, waitFor } from '@testing-library/react'
-import { useGameContext } from '../../contexts/GameContext'
-import { useCellInteraction } from '../../hooks/useCellInteraction'
+import { useGameContext } from '../../src/contexts/GameContext'
+import { useCellInteraction } from '../../src/hooks/useCellInteraction'
 import { renderHookWithGameContext } from '../test-utils'
-import * as useRevealCellsModule from '../../hooks/useRevealCells'
-import * as useFlagsModule from '../../hooks/useFlags'
+import * as useRevealCellsModule from '../../src/hooks/useRevealCells'
+import * as useFlagsModule from '../../src/hooks/useFlags'
 
 describe('useCellInteraction', () => {
   describe('onClick', () => { 

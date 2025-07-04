@@ -1,5 +1,5 @@
 import { renderHook, act, waitFor } from '@testing-library/react'
-import { adjacentCellsToExpand } from '../../helpers/adjacentCellsToExpand'
+import { adjacentCellsToExpand } from '../../src/helpers/adjacentCellsToExpand'
 
 describe('adjacentCellsToExpand', () => {
   describe('given row and col coordinates and a minefield', () => {

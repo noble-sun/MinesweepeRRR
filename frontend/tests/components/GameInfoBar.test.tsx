@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import GameInfoBar from '../../components/GameInfoBar'
+import GameInfoBar from '../../src/components/GameInfoBar'
 
 describe('GameInfoBar component', () => {
   it("renders 'time' prop", () => {

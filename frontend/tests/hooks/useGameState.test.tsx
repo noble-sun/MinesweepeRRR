@@ -1,5 +1,5 @@
 import { renderHook, waitFor, act } from '@testing-library/react'
-import { useGameState } from '../../hooks/useGameState'
+import { useGameState } from '../../src/hooks/useGameState'
 
 describe('useGameState', () => {
   describe('updateMineCount', () => {
@@ -96,3 +96,5 @@ describe('useGameState', () => {
     })
   })
 })
+
+

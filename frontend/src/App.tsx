@@ -2,11 +2,11 @@ import './App.css'
 
 import { useState } from 'react'
 
-import GameInfoBar from '../components/GameInfoBar.tsx'
-import Minefield from '../components/Minefield.tsx'
-import { GameProvider } from '../contexts/GameContext.tsx'
-import { useGameState } from '../hooks/useGameState.tsx'
-import { useTimer } from '../hooks/useTimer.tsx'
+import GameInfoBar from './components/GameInfoBar.tsx'
+import Minefield from './components/Minefield.tsx'
+import { GameProvider } from './contexts/GameContext.tsx'
+import { useGameState } from './hooks/useGameState.ts'
+import { useTimer } from './hooks/useTimer.ts'
 
 function App() {
   const { time, gameIsRunning, startTimer, stopTimer } = useTimer()

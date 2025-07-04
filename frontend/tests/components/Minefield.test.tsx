@@ -1,10 +1,10 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import Minefield from '../../components/Minefield'
-import { GameProvider } from '../../contexts/GameContext.tsx'
-import * as useCellInteractionModule from '../../hooks/useCellInteraction'
-import * as useMinefieldModule from '../../hooks/useMinefield'
-import * as useGameContextModule from '../../contexts/GameContext'
+import Minefield from '../../src/components/Minefield'
+import { GameProvider } from '../../src/contexts/GameContext.tsx'
+import * as useCellInteractionModule from '../../src/hooks/useCellInteraction'
+import * as useMinefieldModule from '../../src/hooks/useMinefield'
+import * as useGameContextModule from '../../src/contexts/GameContext'
 
 describe('Minefield component', () => {
   describe('when call from API finished processing', () => {
