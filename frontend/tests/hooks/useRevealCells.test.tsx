@@ -1,6 +1,6 @@
 import { renderHook, waitFor, act } from '@testing-library/react'
 import { useRevealCells } from '../../src/hooks/useRevealCells'
-import { useGameContext } from '../../src/contexts/GameContext'
+import { useGameContext } from '../../src/hooks/useGameContext'
 import { renderHookWithGameContext } from '../test-utils'
 import * as expandCellsHelper from '../../src/helpers/adjacentCellsToExpand.ts'
 

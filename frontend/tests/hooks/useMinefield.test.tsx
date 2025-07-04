@@ -1,6 +1,6 @@
 import { renderHook, waitFor } from '@testing-library/react'
 import { useMinefield } from '../../src/hooks/useMinefield'
-import { useGameContext } from '../../src/contexts/GameContext'
+import { useGameContext } from '../../src/hooks/useGameContext'
 import { renderHookWithGameContext } from '../test-utils'
 import minesweeperApi from '../../src/utils/api.ts'
 

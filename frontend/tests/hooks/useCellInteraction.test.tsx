@@ -1,5 +1,5 @@
 import { renderHook, act, waitFor } from '@testing-library/react'
-import { useGameContext } from '../../src/contexts/GameContext'
+import { useGameContext } from '../../src/hooks/useGameContext'
 import { useCellInteraction } from '../../src/hooks/useCellInteraction'
 import { renderHookWithGameContext } from '../test-utils'
 import * as useRevealCellsModule from '../../src/hooks/useRevealCells'

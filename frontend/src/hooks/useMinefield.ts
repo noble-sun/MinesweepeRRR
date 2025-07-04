@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
-import { useGameContext } from '../contexts/GameContext.tsx'
 import minesweeperApi, { MineCell, Minefield as MinefieldType } from '../utils/api.ts'
+import { useGameContext } from './useGameContext.ts'
 
 export const useMinefield = () => {
   const [minefield, setMinefield] = useState<MinefieldType>([])

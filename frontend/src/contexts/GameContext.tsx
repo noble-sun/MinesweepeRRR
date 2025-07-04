@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode, useContext, useState } from 'react'
+import React, { createContext, ReactNode, useState } from 'react'
 
 type CellKey = string
 
@@ -16,7 +16,7 @@ export type GameContextType = {
   setSafeUnrevealedCells: React.Dispatch<React.SetStateAction<Set<CellKey>>>
 }
 
-const GameContext = createContext<GameContextType | undefined>(undefined)
+export const GameContext = createContext<GameContextType | undefined>(undefined)
 type GameProviderProps = {
   children: ReactNode
   value?: Partial<GameContextType>
@@ -44,13 +44,4 @@ export const GameProvider = ({ children, value = {} }: GameProviderProps) => {
       {children}
     </GameContext.Provider>
   )
-}
-
-export const useGameContext = () => {
-  const context = useContext(GameContext)
-  if (!context) {
-    throw new Error('useGameContext must be within a GameProvider')
-  }
-
-  return context
 }

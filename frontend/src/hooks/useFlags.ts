@@ -1,4 +1,4 @@
-import { useGameContext } from '../contexts/GameContext.tsx'
+import { useGameContext } from './useGameContext.ts'
 
 export const useFlags = (onFlagCellChange: (delta: number) => void) => {
   const { flaggedCells, setFlaggedCells, questionMarkedCells, setQuestionMarkedCells } =

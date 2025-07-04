@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 
-import { useGameContext } from '../contexts/GameContext.tsx'
 import { useCellInteraction } from '../hooks/useCellInteraction.ts'
+import { useGameContext } from '../hooks/useGameContext.ts'
 import { useMinefield } from '../hooks/useMinefield.ts'
 import { Cell } from './Cell.tsx'
 

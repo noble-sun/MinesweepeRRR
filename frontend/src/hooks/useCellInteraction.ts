@@ -1,7 +1,7 @@
-import { useGameContext } from '../contexts/GameContext.tsx'
-import { useFlags } from '../hooks/useFlags.ts'
-import { useRevealCells } from '../hooks/useRevealCells.ts'
 import type { Minefield } from '../utils/api.ts'
+import { useFlags } from './useFlags.ts'
+import { useGameContext } from './useGameContext.ts'
+import { useRevealCells } from './useRevealCells.ts'
 
 export const useCellInteraction = (
   minefield: Minefield,

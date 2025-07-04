@@ -4,7 +4,7 @@ import Minefield from '../../src/components/Minefield'
 import { GameProvider } from '../../src/contexts/GameContext.tsx'
 import * as useCellInteractionModule from '../../src/hooks/useCellInteraction'
 import * as useMinefieldModule from '../../src/hooks/useMinefield'
-import * as useGameContextModule from '../../src/contexts/GameContext'
+import * as useGameContextModule from '../../src/hooks/useGameContext'
 
 describe('Minefield component', () => {
   describe('when call from API finished processing', () => {

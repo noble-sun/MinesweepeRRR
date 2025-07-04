@@ -1,6 +1,6 @@
-import { useGameContext } from '../contexts/GameContext.tsx'
 import { adjacentCellsToExpand } from '../helpers/adjacentCellsToExpand.ts'
 import type { Minefield } from '../utils/api'
+import { useGameContext } from './useGameContext.ts'
 
 export const useRevealCells = (minefield: Minefield) => {
   const {
