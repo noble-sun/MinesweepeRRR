@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Cell } from './Cell.tsx'
 import { useMinefield } from '../hooks/useMinefield.ts'
 import { useCellInteraction } from '../hooks/useCellInteraction.ts'
@@ -33,7 +33,6 @@ export default function Minefield(
   const { revealedCells, flaggedCells, questionMarkedCells, safeUnrevealedCells } = useGameContext()
 
   useEffect(() => {
-    console.log(safeUnrevealedCells.size)
     if(safeUnrevealedCells.size === 0 && minefield.length > 0) currentGameWon()
   }, [safeUnrevealedCells])
 

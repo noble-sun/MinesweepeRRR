@@ -2,6 +2,7 @@ import { CellProps } from './Cell.types.tsx'
 import flag from '../src/assets/flag.svg'
 import questionMark from '../src/assets/questionMark.svg'
 import mine from '../src/assets/mine.svg'
+import React from 'react'
 
 export const Cell = (
   {
@@ -19,9 +20,9 @@ export const Cell = (
 ) => {
   const displayClue = () => { return (clue === 0) ? "" : clue }
   const displayContextValue = () => {
-    if(isRevealed) return hasMine ? <img src={mine}/> : displayClue();
-    if(flagged) return <img src={flag}/>
-    if(questionMarked) return <img src={questionMark}/>
+    if(isRevealed) return hasMine ? <img src={mine} alt="mine"/> : displayClue();
+    if(flagged) return <img src={flag} alt="flag"/>
+    if(questionMarked) return <img src={questionMark} alt="questionMark"/>
     return ""
   }
 
