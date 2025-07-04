@@ -24,6 +24,6 @@ export function useGameState() {
     gameWon,
     updateMineCount,
     updateGameStatus,
-    gameStatusText
+    gameStatusText,
   }
 }

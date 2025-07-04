@@ -1,6 +1,6 @@
 import { renderHook, act, waitFor } from '@testing-library/react'
-import { useGameContext } from '../../contexts/GameContext'
-import { useFlags } from '../../hooks/useFlags'
+import { useGameContext } from '../../src/contexts/GameContext'
+import { useFlags } from '../../src/hooks/useFlags'
 import { renderHookWithGameContext } from '../test-utils'
 
 describe('useFlags', () => {

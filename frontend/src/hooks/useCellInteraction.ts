@@ -1,7 +1,7 @@
-import { useRevealCells } from '../hooks/useRevealCells.ts'
-import { useFlags } from '../hooks/useFlags.ts'
-import type { Minefield } from '../src/utils/api.ts'
 import { useGameContext } from '../contexts/GameContext.tsx'
+import { useFlags } from '../hooks/useFlags.ts'
+import { useRevealCells } from '../hooks/useRevealCells.ts'
+import type { Minefield } from '../utils/api.ts'
 
 export const useCellInteraction = (
   minefield: Minefield,
@@ -10,26 +10,14 @@ export const useCellInteraction = (
   onExplode: () => void,
   gameWon: (won: boolean) => void,
   stopTimer: () => void,
-  onFlagCellChange: (delta: number) => void
+  onFlagCellChange: (delta: number) => void,
 ) => {
+  const { flaggedCells, questionMarkedCells, revealedCells, setSafeUnrevealedCells } =
+    useGameContext()
 
-  const {
-    flaggedCells,
-    questionMarkedCells,
-    revealedCells,
-    setSafeUnrevealedCells
-  } = useGameContext()
+  const { placeFlag, placeQuestionMark, removeQuestionMark } = useFlags(onFlagCellChange)
 
-  const {
-    placeFlag,
-    placeQuestionMark,
-    removeQuestionMark
-  } = useFlags(onFlagCellChange)
-
-  const {
-    revealCell,
-    expandAdjacentCells
-  } = useRevealCells(minefield)
+  const { revealCell, expandAdjacentCells } = useRevealCells(minefield)
 
   const currentGameLost = () => {
     stopTimer()
@@ -44,11 +32,11 @@ export const useCellInteraction = (
 
   const onClick = (row: number, col: number, hasMine: boolean) => {
     if (gameIsRunning == null) startTimer()
-    
+
     const key = `${row}-${col}`
     if (flaggedCells.has(key) || questionMarkedCells.has(key)) return
 
-    setSafeUnrevealedCells(prev => {
+    setSafeUnrevealedCells((prev) => {
       const cells = new Set(prev)
       cells.delete(key)
       return cells
@@ -69,16 +57,23 @@ export const useCellInteraction = (
     if (revealedCells.has(key)) return
 
     const placeMineIndicationFlag = () => {
-      flaggedCells.has(key) ? placeQuestionMark(key) : placeFlag(key)
+      if (flaggedCells.has(key)) {
+        placeQuestionMark(key)
+      } else {
+        placeFlag(key)
+      }
     }
 
-    questionMarkedCells.has(key) ? removeQuestionMark(key) : placeMineIndicationFlag()
+    if (questionMarkedCells.has(key)) {
+      removeQuestionMark(key)
+    } else {
+      placeMineIndicationFlag()
+    }
   }
 
   return {
     onClick,
     onRightClick,
-    currentGameWon
+    currentGameWon,
   }
 }
-

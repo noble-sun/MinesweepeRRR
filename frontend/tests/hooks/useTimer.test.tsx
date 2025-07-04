@@ -1,5 +1,5 @@
 import { renderHook, waitFor, act } from '@testing-library/react'
-import { useTimer } from '../../hooks/useTimer'
+import { useTimer } from '../../src/hooks/useTimer'
 
 describe('useTimer', () => {
   describe('startTimer', () => {
@@ -68,3 +68,5 @@ describe('useTimer', () => {
     })
   })
 })
+
+

@@ -1,21 +1,22 @@
-import { adjacentCellsToExpand } from '../helpers/adjacentCellsToExpand.ts'
-import type { Minefield } from '../src/utils/api'
 import { useGameContext } from '../contexts/GameContext.tsx'
+import { adjacentCellsToExpand } from '../helpers/adjacentCellsToExpand.ts'
+import type { Minefield } from '../utils/api'
 
 export const useRevealCells = (minefield: Minefield) => {
   const {
     flaggedCells,
     questionMarkedCells,
-    revealedCells, setRevealedCells,
-    setSafeUnrevealedCells
+    revealedCells,
+    setRevealedCells,
+    setSafeUnrevealedCells,
   } = useGameContext()
 
   const revealCell = (row: number, col: number) => {
     const key = `${row}-${col}`
     if (revealedCells.has(key)) return
 
-    setRevealedCells(prev => new Set(prev).add(key))
-    setSafeUnrevealedCells(prev => {
+    setRevealedCells((prev) => new Set(prev).add(key))
+    setSafeUnrevealedCells((prev) => {
       const cells = new Set(prev)
       cells.delete(key)
       return cells
@@ -34,7 +35,7 @@ export const useRevealCells = (minefield: Minefield) => {
         minefield,
         flaggedCells,
         revealedCells,
-        questionMarkedCells
+        questionMarkedCells,
       )
 
       adjacent.forEach(([r, c]) => revealCell(r, c))

@@ -1,5 +1,5 @@
 import React, { ReactNode, forwardRef, useImperativeHandle } from 'react'
-import { GameProvider, GameContextType } from '../contexts/GameContext'
+import { GameProvider, GameContextType } from '../src/contexts/GameContext'
 import { render } from '@testing-library/react'
 
 type HookResults<T> = { current: T | null }
