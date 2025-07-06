@@ -40,7 +40,7 @@ export default function Minefield({
   }, [safeUnrevealedCells, currentGameWon, minefield.length])
 
   return (
-    <>
+    <div className="flex grow-0">
       <div className="block" id="minefield">
         {minefield.map((row, rowIndex) => (
           <div key={rowIndex} className="flex">
@@ -62,6 +62,6 @@ export default function Minefield({
           </div>
         ))}
       </div>
-    </>
+    </div>
   )
 }

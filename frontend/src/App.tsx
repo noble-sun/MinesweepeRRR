@@ -15,21 +15,26 @@ function App() {
   const [exploded, setExploded] = useState(false)
 
   return (
-    <>
-      <GameProvider>
-        <div>{gameStatusText()}</div>
-        <GameInfoBar time={time} exploded={exploded} mineCount={mineCount} />
-        <Minefield
-          startTimer={startTimer}
-          stopTimer={stopTimer}
-          gameIsRunning={gameIsRunning}
-          onExplode={() => setExploded(true)}
-          exploded={exploded}
-          onFlagCellChange={updateMineCount}
-          gameWon={updateGameStatus}
-        />
-      </GameProvider>
-    </>
+    <GameProvider>
+      <div className="relative flex flex-col h-screen">
+        <div className="relative flex grow items-center justify-center">
+          <span className="absolute text-5xl">{gameStatusText()}</span>
+        </div>
+        <div>
+          <GameInfoBar time={time} exploded={exploded} mineCount={mineCount} />
+          <Minefield
+            startTimer={startTimer}
+            stopTimer={stopTimer}
+            gameIsRunning={gameIsRunning}
+            onExplode={() => setExploded(true)}
+            exploded={exploded}
+            onFlagCellChange={updateMineCount}
+            gameWon={updateGameStatus}
+          />
+        </div>
+        <div className="flex grow"></div>
+      </div>
+    </GameProvider>
   )
 }
 
