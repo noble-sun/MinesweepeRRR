@@ -27,14 +27,30 @@ export const Cell = ({
     return ''
   }
 
+  const numberColorClasses: Record<number, string> = {
+    1: 'text-blue-600',
+    2: 'text-green-800',
+    3: 'text-red-700',
+    4: 'text-blue-900',
+    5: 'text-amber-700',
+    6: 'text-cyan-700',
+    7: 'text-black',
+    8: 'text-purple-700',
+  }
+
+  const clueNumberColor = !(clue === null || clue === 0)
+    ? numberColorClasses[clue]
+    : 'text-neutral-500'
+
   return (
     <button
       key={`cell-button-${row}-${col}`}
       id={`cell-button-${row}-${col}`}
-      className={`!w-6 h-6 !p-0 !m-0 !border !rounded-none !border-gray-600 text-black
-        flex items-center justify-center
+      className={`!w-6 h-6 !p-0 !m-0 !border !rounded-none !border-gray-600
+        flex items-center justify-center !font-bold
         ${isRevealed ? (hasMine ? '!bg-red-700' : '!bg-gray-400') : '!bg-gray-500'}
         ${exploded ? '' : 'hover:!bg-gray-700 active:!bg-gray-800'}}
+        ${clueNumberColor}
         `}
       onClick={() => onClick(row, col, hasMine)}
       onContextMenu={(e) => {

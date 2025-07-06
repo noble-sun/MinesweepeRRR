@@ -6,28 +6,214 @@ describe('Cell component', () => {
   describe("when 'isRevealed' is true", () => {
     describe("when 'hasMine' is false", () => {
       describe("when 'clue' is 1 or higher", () => {
-        it("renders 'clue' value", () => {
-          const isRevealed = true
-          const hasMine = false
-          const clue = 3
+        describe('renders clue value', () => {
+          describe('and return correct tailwind class for number', () => {
+            it('1', () => {
+              const isRevealed = true
+              const hasMine = false
+              const clue = 1
 
-          render(
-            <Cell
-              row={ 0 } col={ 0 }
-              onClick={ vi.fn() }
-              onRightClick={ vi.fn() }
-              isRevealed={ isRevealed }
-              hasMine={ hasMine }
-              flagged={ false }
-              questionMarked={ false }
-              exploded={ false }
-              clue={ clue }
-            />
-          )
+              render(
+                <Cell
+                row={ 0 } col={ 0 }
+                onClick={ vi.fn() }
+                onRightClick={ vi.fn() }
+                isRevealed={ isRevealed }
+                hasMine={ hasMine }
+                flagged={ false }
+                questionMarked={ false }
+                exploded={ false }
+                clue={ clue }
+                />
+              )
 
-          const button = screen.getByRole('button')
-          expect(button.textContent).toBe('3')
-          expect(button).toHaveClass('!bg-gray-400')
+              const button = screen.getByRole('button')
+              expect(button.textContent).toBe('1')
+              expect(button).toHaveClass('!bg-gray-400 text-blue-600')
+            })
+          })
+
+          describe('and return correct tailwind class for number', () => {
+            it('2', () => {
+              const isRevealed = true
+              const hasMine = false
+              const clue = 2
+
+              render(
+                <Cell
+                row={ 0 } col={ 0 }
+                onClick={ vi.fn() }
+                onRightClick={ vi.fn() }
+                isRevealed={ isRevealed }
+                hasMine={ hasMine }
+                flagged={ false }
+                questionMarked={ false }
+                exploded={ false }
+                clue={ clue }
+                />
+              )
+
+              const button = screen.getByRole('button')
+              expect(button.textContent).toBe('2')
+              expect(button).toHaveClass('!bg-gray-400 text-green-800')
+            })
+          })
+
+          describe('and return correct tailwind class for number', () => {
+            it('3', () => {
+              const isRevealed = true
+              const hasMine = false
+              const clue = 3
+
+              render(
+                <Cell
+                row={ 0 } col={ 0 }
+                onClick={ vi.fn() }
+                onRightClick={ vi.fn() }
+                isRevealed={ isRevealed }
+                hasMine={ hasMine }
+                flagged={ false }
+                questionMarked={ false }
+                exploded={ false }
+                clue={ clue }
+                />
+              )
+
+              const button = screen.getByRole('button')
+              expect(button.textContent).toBe('3')
+              expect(button).toHaveClass('!bg-gray-400 text-red-700')
+            })
+          })
+
+          describe('and return correct tailwind class for number', () => {
+            it('4', () => {
+              const isRevealed = true
+              const hasMine = false
+              const clue = 4
+
+              render(
+                <Cell
+                row={ 0 } col={ 0 }
+                onClick={ vi.fn() }
+                onRightClick={ vi.fn() }
+                isRevealed={ isRevealed }
+                hasMine={ hasMine }
+                flagged={ false }
+                questionMarked={ false }
+                exploded={ false }
+                clue={ clue }
+                />
+              )
+
+              const button = screen.getByRole('button')
+              expect(button.textContent).toBe('4')
+              expect(button).toHaveClass('!bg-gray-400 text-blue-900')
+            })
+          })
+
+          describe('and return correct tailwind class for number', () => {
+            it('5', () => {
+              const isRevealed = true
+              const hasMine = false
+              const clue = 5
+
+              render(
+                <Cell
+                row={ 0 } col={ 0 }
+                onClick={ vi.fn() }
+                onRightClick={ vi.fn() }
+                isRevealed={ isRevealed }
+                hasMine={ hasMine }
+                flagged={ false }
+                questionMarked={ false }
+                exploded={ false }
+                clue={ clue }
+                />
+              )
+
+              const button = screen.getByRole('button')
+              expect(button.textContent).toBe('5')
+              expect(button).toHaveClass('!bg-gray-400 text-amber-700')
+            })
+          })
+
+          describe('and return correct tailwind class for number', () => {
+            it('6', () => {
+              const isRevealed = true
+              const hasMine = false
+              const clue = 6
+
+              render(
+                <Cell
+                row={ 0 } col={ 0 }
+                onClick={ vi.fn() }
+                onRightClick={ vi.fn() }
+                isRevealed={ isRevealed }
+                hasMine={ hasMine }
+                flagged={ false }
+                questionMarked={ false }
+                exploded={ false }
+                clue={ clue }
+                />
+              )
+
+              const button = screen.getByRole('button')
+              expect(button.textContent).toBe('6')
+              expect(button).toHaveClass('!bg-gray-400 text-cyan-700')
+            })
+          })
+
+          describe('and return correct tailwind class for number', () => {
+            it('7', () => {
+              const isRevealed = true
+              const hasMine = false
+              const clue = 7
+
+              render(
+                <Cell
+                row={ 0 } col={ 0 }
+                onClick={ vi.fn() }
+                onRightClick={ vi.fn() }
+                isRevealed={ isRevealed }
+                hasMine={ hasMine }
+                flagged={ false }
+                questionMarked={ false }
+                exploded={ false }
+                clue={ clue }
+                />
+              )
+
+              const button = screen.getByRole('button')
+              expect(button.textContent).toBe('7')
+              expect(button).toHaveClass('!bg-gray-400 text-black')
+            })
+          })
+
+          describe('and return correct tailwind class for number', () => {
+            it('8', () => {
+              const isRevealed = true
+              const hasMine = false
+              const clue = 8
+
+              render(
+                <Cell
+                row={ 0 } col={ 0 }
+                onClick={ vi.fn() }
+                onRightClick={ vi.fn() }
+                isRevealed={ isRevealed }
+                hasMine={ hasMine }
+                flagged={ false }
+                questionMarked={ false }
+                exploded={ false }
+                clue={ clue }
+                />
+              )
+
+              const button = screen.getByRole('button')
+              expect(button.textContent).toBe('8')
+              expect(button).toHaveClass('!bg-gray-400 text-purple-700')
+            })
+          })
         })
       })
 
