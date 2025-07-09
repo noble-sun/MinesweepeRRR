@@ -1,5 +1,3 @@
-import React from 'react'
-
 import flag from '../assets/flag.svg'
 import mine from '../assets/mine.svg'
 import questionMark from '../assets/questionMark.svg'

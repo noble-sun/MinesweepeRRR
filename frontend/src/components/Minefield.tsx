@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 
 import { useCellInteraction } from '../hooks/useCellInteraction.ts'
 import { useGameContext } from '../hooks/useGameContext.ts'
