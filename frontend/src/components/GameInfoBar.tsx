@@ -1,5 +1,3 @@
-import React from 'react'
-
 import deadFaceIcon from '../assets/deadFace.svg'
 import smileFaceIcon from '../assets/smileFace.svg'
 
